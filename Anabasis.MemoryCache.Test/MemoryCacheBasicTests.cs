@@ -10,7 +10,10 @@ namespace Anabasis.MemoryCache.Test
 	{
 		public static dynamic CreateInstance<T>(Assembly assembly, object parameter)
 		{
-			return assembly != null ? Activator.CreateInstance(TestHelpers.CreateType<T>(assembly), parameter) : null;
+			if (null == parameter)
+				return Activator.CreateInstance(CreateType<T>(assembly));
+
+			return Activator.CreateInstance(CreateType<T>(assembly), parameter);
 		}
 
 		private static Type CreateType<T>(Assembly assembly)
@@ -37,6 +40,8 @@ namespace Anabasis.MemoryCache.Test
 			
 
 			dynamic instance = TestHelpers.CreateInstance<Class1>(MemoryCacheBasicTests.TestResult.Assembly, null);
+
+			instance.TestMethod("qsfqsfqfqsfqfs", "kkkkk");
 
 		}
 

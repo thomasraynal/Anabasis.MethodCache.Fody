@@ -7,9 +7,25 @@ namespace Anabasis.MemoryCache.Test
 {
     public class Class1
     {
-        public void TestMethod()
+
+
+        [Cache]
+        public string TestMethod(string a, int b)
         {
-            Debug.WriteLine("DEBUG");
+            var key = string.Format(a, b);
+
+            var value = a + b;
+
+            CachingServices.DefaultBackend.Set(key, value);
+
+            return value;
         }
+        
+        public void TestMethod2()
+        {
+
+            CachingServices.DefaultBackend.TryGetValue("sfsq", out int value);
+        }
+
     }
 }
