@@ -10,7 +10,7 @@ namespace Anabasis.MemoryCache.Fody
     public static class DebugWriteLine
     {
 
-        public static void WeaveMethod(ModuleDefinition moduleDefinition, 
+        public static void WeaveMethod(ModuleDefinition moduleDefinition,
             MethodDefinition method,
             References references)
         {
@@ -72,16 +72,16 @@ namespace Anabasis.MemoryCache.Fody
         }
 
 
-        private static IEnumerable<Instruction> GetInstructions(ModuleDefinition moduleDefinition, 
+        private static IEnumerable<Instruction> GetInstructions(ModuleDefinition moduleDefinition,
             MethodDefinition method,
             References references)
         {
             var methodName = CreateCacheKeyMethodName(method);
 
-            //var cacheKeyVariable = new VariableDefinition(references.ICacheKeyBuilderTypeReference);
+            var cacheKeyVariable = new VariableDefinition(references.ICacheKeyBuilderTypeReference);
 
-            //method.Body.Variables.Add(cacheKeyVariable);
-            //var cacheKeyVariableIndex = method.Body.Variables.Count - 1;
+            method.Body.Variables.Add(cacheKeyVariable);
+            var cacheKeyVariableIndex = method.Body.Variables.Count - 1;
 
             yield return Instruction.Create(OpCodes.Call, references.GetCacheKeyBuilderTypeReference);
 
@@ -102,9 +102,15 @@ namespace Anabasis.MemoryCache.Fody
 
                 yield return Instruction.Create(OpCodes.Stelem_Ref);
             }
-;
+
             yield return Instruction.Create(OpCodes.Callvirt, references.CreateKeyMethodReference);
-        //   yield return Instruction.Create(OpCodes.Call, references.DebugWriteLineMethodReference);
+            yield return Instruction.Create(OpCodes.Stloc, cacheKeyVariable);
+
+
+
+
+
+            //   yield return Instruction.Create(OpCodes.Call, references.DebugWriteLineMethodReferencrString);
 
 
         }

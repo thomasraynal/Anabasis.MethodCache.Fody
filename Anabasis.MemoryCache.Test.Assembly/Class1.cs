@@ -13,10 +13,13 @@ namespace Anabasis.MemoryCache.Test
         public string TestMethod(string a, string b)
         {
 
-            //   var keyBuilder = CachingServices.KeyBuilder;
+            var key = CachingServices.KeyBuilder.CreateKey("methodName", a, b);
 
+            if (CachingServices.Backend.TryGetValue(key, out string cacheValue))
+            {
+                return cacheValue;
+            }
 
-            CachingServices.KeyBuilder.CreateKey("methodName", a, b);
 
             //var key = "methodCache";
 
@@ -24,7 +27,7 @@ namespace Anabasis.MemoryCache.Test
 
             //var value = a + b;
 
-            //CachingServices.DefaultBackend.Set(key, value);
+            //CachingServices.Backend.Set(key, value);
 
             return a + b;
         }

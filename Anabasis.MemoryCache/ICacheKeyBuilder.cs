@@ -6,6 +6,6 @@ namespace Anabasis.MemoryCache
 {
 	public interface ICacheKeyBuilder
 	{
-		void CreateKey(string methodName, params object[] parameters);
+		string CreateKey(string methodName, params object[] parameters);
 	}
 }

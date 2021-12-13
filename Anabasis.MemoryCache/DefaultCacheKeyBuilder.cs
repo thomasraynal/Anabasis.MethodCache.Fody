@@ -20,9 +20,9 @@ namespace Anabasis.MemoryCache
 		//	return "cacheKey";
 		//}
 
-        public void CreateKey(string methodName, params object[] parameters)
+        public string CreateKey(string methodName, params object[] parameters)
         {
-			//return "cacheKey";
+			return "cacheKey";
 		}
     }
 }

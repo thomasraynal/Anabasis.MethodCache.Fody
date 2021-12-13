@@ -92,7 +92,11 @@ namespace Anabasis.MemoryCache.Fody
                                                                       methodInfo.GetParameters()[0].ParameterType.FullName == typeof(string).FullName &&
                                                                       methodInfo.GetParameters()[1].ParameterType.FullName == typeof(object[]).FullName));
 
-
+            references.DebugWriteLineMethodReferencrString = moduleWeaver.ModuleDefinition.ImportReference(typeof(System.Diagnostics.Debug)
+                                            .GetMethods()
+                                            .First(methodInfo => methodInfo.Name == nameof(System.Diagnostics.Debug.WriteLine) &&
+                                                           methodInfo.GetParameters().Length == 1 &&
+                                                          methodInfo.GetParameters()[0].ParameterType.FullName == typeof(string).FullName));
             return references;
 		}
 
@@ -100,6 +104,7 @@ namespace Anabasis.MemoryCache.Fody
         public MethodReference StringJoinMethodReference { get; private set; }
         public MethodReference StringFormatMethodReference { get; private set; }
         public MethodReference DebugWriteLineMethodReference { get; private set; }
+        public MethodReference DebugWriteLineMethodReferencrString { get; private set; }
         public MethodReference CreateKeyMethodReference { get; private set; }
         public ModuleWeaver ModuleWeaver { get; }
         public TypeReference CachingServicesTypeReference { get; private set; }
