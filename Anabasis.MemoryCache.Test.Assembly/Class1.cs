@@ -10,21 +10,31 @@ namespace Anabasis.MemoryCache.Test
 
 
         [Cache]
-        public string TestMethod(string a, int b)
+        public string TestMethod(string a, string b)
         {
-            var key = string.Format(a, b);
 
-            var value = a + b;
+            //   var keyBuilder = CachingServices.KeyBuilder;
 
-            CachingServices.DefaultBackend.Set(key, value);
 
-            return value;
+            CachingServices.KeyBuilder.CreateKey("methodName", a, b);
+
+            //var key = "methodCache";
+
+            //Debug.WriteLine(key);
+
+            //var value = a + b;
+
+            //CachingServices.DefaultBackend.Set(key, value);
+
+            return a + b;
         }
         
         public void TestMethod2()
         {
 
-            CachingServices.DefaultBackend.TryGetValue("sfsq", out int value);
+          
+
+            CachingServices.Backend.TryGetValue("sfsq", out int value);
         }
 
     }

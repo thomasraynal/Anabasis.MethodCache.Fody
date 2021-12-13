@@ -77,13 +77,19 @@ namespace Anabasis.MemoryCache.Fody
             References references)
         {
             var methodName = CreateCacheKeyMethodName(method);
-            processorContext = processorContext.Append(x => x.Create(OpCodes.Ldstr, methodName));
 
+            //var cacheKeyVariable = new VariableDefinition(references.ICacheKeyBuilderTypeReference);
 
-            yield return Instruction.Create(OpCodes.Ldstr, $"DEBUG: {method.Name}({{0}})");
+            //method.Body.Variables.Add(cacheKeyVariable);
+            //var cacheKeyVariableIndex = method.Body.Variables.Count - 1;
+
+            yield return Instruction.Create(OpCodes.Call, references.GetCacheKeyBuilderTypeReference);
+
+            yield return Instruction.Create(OpCodes.Ldstr, methodName);
 
             yield return Instruction.Create(OpCodes.Ldc_I4, method.Parameters.Count);
             yield return Instruction.Create(OpCodes.Newarr, moduleDefinition.ImportReference(typeof(object)));
+
 
             for (int i = 0; i < method.Parameters.Count; i++)
             {
@@ -96,10 +102,11 @@ namespace Anabasis.MemoryCache.Fody
 
                 yield return Instruction.Create(OpCodes.Stelem_Ref);
             }
+;
+            yield return Instruction.Create(OpCodes.Callvirt, references.CreateKeyMethodReference);
+        //   yield return Instruction.Create(OpCodes.Call, references.DebugWriteLineMethodReference);
 
-        //    yield return Instruction.Create(OpCodes.Call, references.StringJoinMethodReference);
-            yield return Instruction.Create(OpCodes.Call, references.StringFormatMethodReference);
-            yield return Instruction.Create(OpCodes.Call, references.DebugWriteLineMethodReference);
+
         }
     }
 }
