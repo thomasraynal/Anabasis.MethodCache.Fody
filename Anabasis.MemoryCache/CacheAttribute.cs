@@ -1,5 +1,4 @@
-﻿using Microsoft.Extensions.Caching.Memory;
-using System;
+﻿using System;
 
 namespace Anabasis.MemoryCache
 {
@@ -11,8 +10,6 @@ namespace Anabasis.MemoryCache
 		}
 
 		public double AbsoluteExpirationRelativeToNow { get; set; }
-
-		public CacheItemPriority Priority { get; set; }
 
 		public double SlidingExpiration { get; set; }
 	}

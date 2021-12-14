@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anabasis.MemoryCache.Test.A
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anabasis.MemoryCache.Test", "Anabasis.MemoryCache.Test\Anabasis.MemoryCache.Test.csproj", "{4F9C9B73-DAA8-4E82-8BE6-AEB5ED1E7118}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MemoryCache.SmokeTest", "Anabasis.MemoryCache.SmokeTest\Anabasis.MemoryCache.SmokeTest.csproj", "{D1DB90D2-DDAC-4F5E-86FA-2D711874F21A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{4F9C9B73-DAA8-4E82-8BE6-AEB5ED1E7118}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4F9C9B73-DAA8-4E82-8BE6-AEB5ED1E7118}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4F9C9B73-DAA8-4E82-8BE6-AEB5ED1E7118}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1DB90D2-DDAC-4F5E-86FA-2D711874F21A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1DB90D2-DDAC-4F5E-86FA-2D711874F21A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1DB90D2-DDAC-4F5E-86FA-2D711874F21A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1DB90D2-DDAC-4F5E-86FA-2D711874F21A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,14 +1,10 @@
 ﻿using Mono.Cecil;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Reflection;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 namespace Anabasis.MemoryCache.Fody
 {
-	public class References
+    public class References
 	{
 		protected References(ModuleWeaver moduleWeaver)
 		{
