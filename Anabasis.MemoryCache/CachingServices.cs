@@ -12,7 +12,6 @@ namespace Anabasis.MemoryCache
 			Backend = new InMemoryCachingBackend();
 		}
 
-
 		public static ICacheKeyBuilder KeyBuilder { get; set; }
 		public static ICachingBackend Backend { get; set; }
 

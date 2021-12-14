@@ -15,7 +15,6 @@ namespace Anabasis.MemoryCache.Fody
             References references)
         {
            
-
             var processor = method.Body.GetILProcessor();
 
             var current = method.Body.Instructions.First();
@@ -87,11 +86,11 @@ namespace Anabasis.MemoryCache.Fody
             VariableDefinition resultVariable,
             VariableDefinition cacheKeyVariable)
         {
+
             yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
             yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
             yield return Instruction.Create(OpCodes.Ldloc, resultVariable);
             yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(method.ReturnType));
-
 
         }
 
@@ -104,7 +103,6 @@ namespace Anabasis.MemoryCache.Fody
         {
             var methodName = CreateCacheKeyMethodName(method);
 
- 
             var cacheValueVariable = new VariableDefinition(moduleDefinition.TypeSystem.String);
             var hasCacheValue = new VariableDefinition(moduleDefinition.TypeSystem.Boolean);
 
@@ -141,6 +139,11 @@ namespace Anabasis.MemoryCache.Fody
             yield return Instruction.Create(OpCodes.Ldloc, hasCacheValue);
 
             yield return Instruction.Create(OpCodes.Brfalse, firstNonWeaved);
+
+            yield return Instruction.Create(OpCodes.Ldstr, $"hit cache - {methodName}");
+            yield return Instruction.Create(OpCodes.Call, references.DebugWriteLineStringMethodReference);
+
+
             yield return Instruction.Create(OpCodes.Ldloc, cacheValueVariable);
             yield return Instruction.Create(OpCodes.Ret);
 

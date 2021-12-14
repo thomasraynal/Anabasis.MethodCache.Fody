@@ -6,25 +6,16 @@ using System.Text;
 
 namespace Anabasis.MemoryCache.Fody
 {
+	//https://github.com/SpatialFocus/MethodCache.Fody/blob/master/src/SpatialFocus.MethodCache.Fody/Extensions/ModuleDefinitionExtension.cs
 	public static class ModuleDefinitionExtension
 	{
 		public static ICollection<WeavingCandidate> GetWeavingCandidates(this ModuleDefinition moduleDefinition, References references)
 		{
-			if (moduleDefinition == null)
-			{
-				throw new ArgumentNullException(nameof(moduleDefinition));
-			}
-
-			if (references == null)
-			{
-				throw new ArgumentNullException(nameof(references));
-			}
-
 			var weavingCandidates = new List<WeavingCandidate>();
 
 			foreach (var typeDefinition in moduleDefinition.Types)
 			{
-				var typeCandidates = typeDefinition.Methods.Where(methodDefinition => methodDefinition.HasCacheAttribute(references))
+				var typeCandidates = typeDefinition.Methods.Where(methodDefinition => methodDefinition.HasCacheAttribute(references) && methodDefinition.IsEligibleForWeaving(references))
 														   .Select(methodDefinition => new WeavingCandidate(typeDefinition, methodDefinition))
 														   .ToArray();
 

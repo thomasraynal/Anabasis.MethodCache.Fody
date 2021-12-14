@@ -47,7 +47,7 @@ namespace Anabasis.MemoryCache
         public bool TryGetValue<TItem>(string key, out TItem value)
         {
             value = default;
-            return false;
+            return true;
         }
     }
 }

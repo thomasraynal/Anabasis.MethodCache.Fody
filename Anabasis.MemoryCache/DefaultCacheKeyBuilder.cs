@@ -1,28 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Anabasis.MemoryCache
 {
 	public class DefaultCacheKeyBuilder : ICacheKeyBuilder
 	{
-		//public string CreateKey(CacheKeyParameters cacheKeyParameters)
-		//{
-		//	return
-		//		cacheKeyParameters.MethodName +
-		//		cacheKeyParameters.MethodParameters
-		//			.Select(methodParameter => $"{methodParameter.ParameterName}|{methodParameter.ParameterHashCode}")
-		//			.Aggregate((methodParameter1, methodParameter2) => $"{methodParameter1};{methodParameter2}");
-		//}
+		private string GetParameterCacheKey(object parameter)
+        {
+			if (null == parameter) return "null";
 
-		//public string CreateKey(string methodName)
-		//{
-		//	return "cacheKey";
-		//}
+			var type = parameter.GetType();
+
+			return $"{type.Name}|{parameter.GetHashCode()}";
+        }
 
         public string CreateKey(string methodName, params object[] parameters)
         {
-			return "cacheKey";
+			return
+				methodName +
+				parameters
+					.Select(methodParameter => GetParameterCacheKey(methodParameter))
+					.Aggregate((methodParameter1, methodParameter2) => $"{methodParameter1};{methodParameter2}");
 		}
     }
 }

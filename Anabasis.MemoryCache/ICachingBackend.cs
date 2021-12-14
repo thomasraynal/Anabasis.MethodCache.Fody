@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 
 namespace Anabasis.MemoryCache
 {
-	public interface ICachingBackend
+    public interface ICachingBackend
 	{
 		Task Clear(CancellationToken cancellationToken = default);
 		bool ContainsKey(string key);

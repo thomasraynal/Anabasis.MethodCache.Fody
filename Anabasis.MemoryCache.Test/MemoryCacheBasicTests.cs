@@ -2,6 +2,7 @@
 using Fody;
 using NUnit.Framework;
 using System;
+using System.Diagnostics;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -38,12 +39,10 @@ namespace Anabasis.MemoryCache.Test
 		[Test]
 		public async Task BasicTest1CreateAndGet()
 		{
-			
-
 			dynamic instance = TestHelpers.CreateInstance<Class1>(MemoryCacheBasicTests.TestResult.Assembly, null);
 
 			var gg = instance.TestMethod("qsfqsfqfqsfqfs", "kkkkk");
-
+			Debug.WriteLine(gg as string);
 		}
 
 	}

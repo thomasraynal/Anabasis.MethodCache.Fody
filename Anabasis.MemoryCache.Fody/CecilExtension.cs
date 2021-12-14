@@ -5,6 +5,7 @@ using System.Text;
 
 namespace Anabasis.MemoryCache.Fody
 {
+	//https://github.com/SpatialFocus/MethodCache.Fody/blob/master/src/SpatialFocus.MethodCache.Fody/Extensions/CecilExtension.cs
 	public static class CecilExtension
 	{
 		public static MethodReference MakeGeneric(this MethodReference method, params TypeReference[] arguments)
