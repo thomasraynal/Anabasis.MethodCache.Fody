@@ -39,14 +39,15 @@ namespace Anabasis.MemoryCache
             throw new System.NotImplementedException();
         }
 
-        public void Set<TItem>(string key, TItem value)
+        public void SetValue<TItem>(string key, TItem value)
         {
       
         }
 
         public bool TryGetValue<TItem>(string key, out TItem value)
         {
-            throw new System.NotImplementedException();
+            value = default;
+            return false;
         }
     }
 }

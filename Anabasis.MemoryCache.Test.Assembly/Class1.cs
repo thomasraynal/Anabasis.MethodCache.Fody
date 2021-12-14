@@ -2,32 +2,52 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Anabasis.MemoryCache.Test
 {
     public class Class1
     {
-
-
-        [Cache]
-        public string TestMethod(string a, string b)
+   
+        public string TestMethodNotask(string a, string b)
         {
 
             var key = CachingServices.KeyBuilder.CreateKey("methodName", a, b);
 
-            if (CachingServices.Backend.TryGetValue(key, out string cacheValue))
-            {
-                return cacheValue;
-            }
+            //if (CachingServices.Backend.TryGetValue(key, out string cacheValue))
+            //{
+            //    return cacheValue;
+            //}
 
 
             //var key = "methodCache";
 
             //Debug.WriteLine(key);
 
+            var value = a + b;
+
+            CachingServices.Backend.SetValue(key, value);
+
+
+
+            return a + b;
+        }
+
+        [Cache]
+        public string TestMethod(string a, string b)
+        {
+
+            //var key = CachingServices.KeyBuilder.CreateKey("methodName", a, b);
+
+            //if (CachingServices.Backend.TryGetValue(key, out string cacheValue))
+            //{
+            //    return cacheValue;
+            //}
+
+
             //var value = a + b;
 
-            //CachingServices.Backend.Set(key, value);
+            //CachingServices.Backend.SetValue(key, value);
 
             return a + b;
         }

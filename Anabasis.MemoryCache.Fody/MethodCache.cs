@@ -7,40 +7,50 @@ using System.Text;
 
 namespace Anabasis.MemoryCache.Fody
 {
-    public static class DebugWriteLine
+    public static class MethodCache
     {
 
         public static void WeaveMethod(ModuleDefinition moduleDefinition,
             MethodDefinition method,
             References references)
         {
-            var processor = method.Body.GetILProcessor();
-            var current = method.Body.Instructions.First();
+           
 
-            //Create Nop instruction to use as a starting point
-            //for the rest of our instructions
+            var processor = method.Body.GetILProcessor();
+
+            var current = method.Body.Instructions.First();
+            var firstNonWeaved = current;
+
             var first = Instruction.Create(OpCodes.Nop);
             processor.InsertBefore(current, first);
             current = first;
 
-            //Insert all instructions for debug output after Nop
-            foreach (Instruction instruction in GetInstructions(moduleDefinition, method, references))
+            var cacheKeyVariable = new VariableDefinition(moduleDefinition.TypeSystem.String);
+            var resultVariable = method.Body.Variables[method.Body.Variables.Count - 1];
+
+            foreach (var instruction in WeaveTryGetCacheValue(moduleDefinition, method, references, firstNonWeaved, cacheKeyVariable))
             {
                 processor.InsertAfter(current, instruction);
                 current = instruction;
             }
+
+            var allReturnInstructions = method.Body.Instructions.Where(instruction => instruction.OpCode == OpCodes.Ret).ToArray();
+          
+            foreach (var returnInstruction in allReturnInstructions.Skip(1))
+            {
+                foreach (var instruction in WeaveSetCacheValue(references, method, resultVariable, cacheKeyVariable))
+                {
+                    processor.InsertBefore(returnInstruction, instruction);
+                }
+            }
+
         }
 
         private static string CreateCacheKeyMethodName(MethodDefinition methodDefinition)
         {
-            if (methodDefinition == null)
-            {
-                throw new ArgumentNullException(nameof(methodDefinition));
-            }
+            var builder = new StringBuilder();
 
-            StringBuilder builder = new StringBuilder();
-
-            TypeDefinition declaringType = methodDefinition.DeclaringType;
+            var declaringType = methodDefinition.DeclaringType;
 
             if (declaringType.HasGenericParameters)
             {
@@ -71,25 +81,42 @@ namespace Anabasis.MemoryCache.Fody
             return builder.ToString();
         }
 
-
-        private static IEnumerable<Instruction> GetInstructions(ModuleDefinition moduleDefinition,
+        private static IEnumerable<Instruction> WeaveSetCacheValue(
+            References references,
             MethodDefinition method,
-            References references)
+            VariableDefinition resultVariable,
+            VariableDefinition cacheKeyVariable)
+        {
+            yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
+            yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
+            yield return Instruction.Create(OpCodes.Ldloc, resultVariable);
+            yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(method.ReturnType));
+
+
+        }
+
+        private static IEnumerable<Instruction> WeaveTryGetCacheValue(
+            ModuleDefinition moduleDefinition,
+            MethodDefinition method,
+            References references,
+            Instruction firstNonWeaved,
+            VariableDefinition cacheKeyVariable)
         {
             var methodName = CreateCacheKeyMethodName(method);
 
-            var cacheKeyVariable = new VariableDefinition(references.ICacheKeyBuilderTypeReference);
+ 
+            var cacheValueVariable = new VariableDefinition(moduleDefinition.TypeSystem.String);
+            var hasCacheValue = new VariableDefinition(moduleDefinition.TypeSystem.Boolean);
 
             method.Body.Variables.Add(cacheKeyVariable);
-            var cacheKeyVariableIndex = method.Body.Variables.Count - 1;
+            method.Body.Variables.Add(cacheValueVariable);
+            method.Body.Variables.Add(hasCacheValue);
 
             yield return Instruction.Create(OpCodes.Call, references.GetCacheKeyBuilderTypeReference);
 
             yield return Instruction.Create(OpCodes.Ldstr, methodName);
-
             yield return Instruction.Create(OpCodes.Ldc_I4, method.Parameters.Count);
             yield return Instruction.Create(OpCodes.Newarr, moduleDefinition.ImportReference(typeof(object)));
-
 
             for (int i = 0; i < method.Parameters.Count; i++)
             {
@@ -106,12 +133,16 @@ namespace Anabasis.MemoryCache.Fody
             yield return Instruction.Create(OpCodes.Callvirt, references.CreateKeyMethodReference);
             yield return Instruction.Create(OpCodes.Stloc, cacheKeyVariable);
 
+            yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
+            yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
+            yield return Instruction.Create(OpCodes.Ldloca, cacheValueVariable);
+            yield return Instruction.Create(OpCodes.Callvirt, references.GetTryGetValue(method.ReturnType));
+            yield return Instruction.Create(OpCodes.Stloc, hasCacheValue);
+            yield return Instruction.Create(OpCodes.Ldloc, hasCacheValue);
 
-
-
-
-            //   yield return Instruction.Create(OpCodes.Call, references.DebugWriteLineMethodReferencrString);
-
+            yield return Instruction.Create(OpCodes.Brfalse, firstNonWeaved);
+            yield return Instruction.Create(OpCodes.Ldloc, cacheValueVariable);
+            yield return Instruction.Create(OpCodes.Ret);
 
         }
     }

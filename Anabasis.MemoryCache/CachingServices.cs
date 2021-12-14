@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Text;
 
-//Anabasis.MemoryCache.CachingServices.KeyBuilder
 namespace Anabasis.MemoryCache
 {
 	public static class CachingServices
@@ -12,7 +11,6 @@ namespace Anabasis.MemoryCache
 			KeyBuilder = new DefaultCacheKeyBuilder();
 			Backend = new InMemoryCachingBackend();
 		}
-
 
 
 		public static ICacheKeyBuilder KeyBuilder { get; set; }

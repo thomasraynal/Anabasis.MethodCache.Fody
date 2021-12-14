@@ -24,45 +24,23 @@ namespace Anabasis.MemoryCache.Fody
             var cacheKeyBuilderTypeDefinition = moduleWeaver.FindTypeDefinition("Anabasis.MemoryCache.ICacheKeyBuilder");
             references.ICacheKeyBuilderTypeReference = moduleWeaver.ModuleDefinition.ImportReference(cacheKeyBuilderTypeDefinition);
 
+            var cachingBackendTypeDefinition = moduleWeaver.FindTypeDefinition("Anabasis.MemoryCache.ICachingBackend");
+            references.ICachingBackendTypeReference = moduleWeaver.ModuleDefinition.ImportReference(cachingBackendTypeDefinition);
+
             var getCacheKeyBuilderTypeDefinition = cachingServicesTypeDefinition.Properties.Single(propertyDefinition=> propertyDefinition.Name == "KeyBuilder").GetMethod;
             references.GetCacheKeyBuilderTypeReference = moduleWeaver.ModuleDefinition.ImportReference(getCacheKeyBuilderTypeDefinition);
 
-            var createKeyMethod = cacheKeyBuilderTypeDefinition.Methods.Single(m => m.Name == "CreateKey");
-            references.CreateKeyMethodReference = moduleWeaver.ModuleDefinition.ImportReference(createKeyMethod);
+            var getBackendTypeDefinition = cachingServicesTypeDefinition.Properties.Single(propertyDefinition => propertyDefinition.Name == "Backend").GetMethod;
+            references.GetBackendTypeReference = moduleWeaver.ModuleDefinition.ImportReference(getBackendTypeDefinition);
 
-            var typeType = moduleWeaver.FindTypeDefinition("System.Type");
-            var getTypeFromHandle = typeType.Methods
-                .First(x => x.Name == "GetTypeFromHandle" &&
-                            x.Parameters.Count == 1 &&
-                            x.Parameters[0].ParameterType.Name == "RuntimeTypeHandle");
+            var createKeyMethodDefinition = cacheKeyBuilderTypeDefinition.Methods.Single(methodDefinition => methodDefinition.Name == "CreateKey");
+            references.CreateKeyMethodReference = moduleWeaver.ModuleDefinition.ImportReference(createKeyMethodDefinition);
 
-            references.GetTypeFromHandle = moduleWeaver.ModuleDefinition.ImportReference(getTypeFromHandle);
+            var tryGetValueMethodDefinition = cachingBackendTypeDefinition.Methods.Single(methodDefinition => methodDefinition.Name == "TryGetValue");
+            references.TryGetValueMethodReference = moduleWeaver.ModuleDefinition.ImportReference(tryGetValueMethodDefinition);
 
-
-            //references.CreateKeyMethodReference = moduleWeaver.ModuleDefinition.ImportReference(typeof(System.Diagnostics.Debug)
-            //                                .GetMethods()
-            //                                .First(methodInfo => methodInfo.Name == nameof(System.Diagnostics.Debug.WriteLine) &&
-            //                                               methodInfo.GetParameters().Length == 2 &&
-            //                                              methodInfo.GetParameters()[0].ParameterType.FullName == typeof(string).FullName &&
-            //                                              methodInfo.GetParameters()[1].ParameterType.FullName == typeof(object[]).FullName));
-
-
-            //  var keyBuilderTypeDefinition = cachingServicesTypeDefinition.Properties.Single(x => createKeyMethodx.Name == "KeyBuilder").GetMethod;
-
-
-            //   references.CachingServicesTypeReference = moduleWeaver.ModuleDefinition.ImportReference(cachingServicesTypeDefinition);
-
-
-            //    references.CachingServicesTypeReference.pr
-
-            ////var icacheKeyBuilderType = moduleWeaver.FindTypeDefinition("Anabasis.MemoryCache.ICacheKeyBuilder");
-            ////references.ICacheKeyBuilderTypeTypeReference = moduleWeaver.ModuleDefinition.ImportReference(icacheKeyBuilderType);
-
-            //var keyBuilderGetMethodDefinition = cachingServicesTypeDefinition.Properties.Single(x => x.Name == "KeyBuilder").GetMethod;
-            //    references.KeyBuilderGetMethodReference = moduleWeaver.ModuleDefinition.ImportReference(keyBuilderGetMethodDefinition);
-
-            //var keyBuilderCreateKeyMethodDefinition = keyBuilderGetMethodDefinition.Resolve().Methods.Single(x => x.Name == "CreateKey");
-            //references.KeyBuilderCreateKeyMethodReference = moduleWeaver.ModuleDefinition.ImportReference(keyBuilderCreateKeyMethodDefinition);
+            var setValueMethodDefinition = cachingBackendTypeDefinition.Methods.Single(methodDefinition => methodDefinition.Name == "SetValue");
+            references.SetValueMethodReference = moduleWeaver.ModuleDefinition.ImportReference(setValueMethodDefinition);
 
 
 
@@ -92,11 +70,11 @@ namespace Anabasis.MemoryCache.Fody
                                                                       methodInfo.GetParameters()[0].ParameterType.FullName == typeof(string).FullName &&
                                                                       methodInfo.GetParameters()[1].ParameterType.FullName == typeof(object[]).FullName));
 
-            references.DebugWriteLineMethodReferencrString = moduleWeaver.ModuleDefinition.ImportReference(typeof(System.Diagnostics.Debug)
+            references.DebugWriteLineStringMethodReference = moduleWeaver.ModuleDefinition.ImportReference(typeof(System.Diagnostics.Debug)
                                             .GetMethods()
                                             .First(methodInfo => methodInfo.Name == nameof(System.Diagnostics.Debug.WriteLine) &&
-                                                           methodInfo.GetParameters().Length == 1 &&
-                                                          methodInfo.GetParameters()[0].ParameterType.FullName == typeof(string).FullName));
+                                                                 methodInfo.GetParameters().Length == 1 &&
+                                                                 methodInfo.GetParameters()[0].ParameterType.FullName == typeof(string).FullName));
             return references;
 		}
 
@@ -104,7 +82,7 @@ namespace Anabasis.MemoryCache.Fody
         public MethodReference StringJoinMethodReference { get; private set; }
         public MethodReference StringFormatMethodReference { get; private set; }
         public MethodReference DebugWriteLineMethodReference { get; private set; }
-        public MethodReference DebugWriteLineMethodReferencrString { get; private set; }
+        public MethodReference DebugWriteLineStringMethodReference { get; private set; }
         public MethodReference CreateKeyMethodReference { get; private set; }
         public ModuleWeaver ModuleWeaver { get; }
         public TypeReference CachingServicesTypeReference { get; private set; }
@@ -113,6 +91,12 @@ namespace Anabasis.MemoryCache.Fody
         public MethodReference KeyBuilderCreateKeyMethodReference { get; private set; }
         public MethodReference GetCacheKeyBuilderTypeReference { get; private set; }
         public MethodReference GetTypeFromHandle { get; private set; }
+        public TypeReference ICachingBackendTypeReference { get; private set; }
+        public MethodReference TryGetValueMethodReference { get; private set; }
+        public MethodReference GetTryGetValue(TypeReference type) => ModuleWeaver.ModuleDefinition.ImportReference(TryGetValueMethodReference.MakeGeneric(type));
+        public MethodReference GetSetValue(TypeReference type) => ModuleWeaver.ModuleDefinition.ImportReference(SetValueMethodReference.MakeGeneric(type));
+        public MethodReference GetBackendTypeReference { get; private set; }
+        public MethodReference SetValueMethodReference { get; private set; }
     }
 
 }
