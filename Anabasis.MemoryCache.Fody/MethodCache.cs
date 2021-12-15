@@ -122,7 +122,7 @@ namespace Anabasis.MemoryCache.Fody
                 yield return Instruction.Create(OpCodes.Ldc_I4, i);
                 yield return Instruction.Create(OpCodes.Ldarg, method.Parameters[i]);
 
-                if (method.Parameters[i].ParameterType.IsValueType)
+                if (method.Parameters[i].ParameterType.IsGenericParameter || method.Parameters[i].ParameterType.IsValueType)
                     yield return Instruction.Create(OpCodes.Box, method.Parameters[i].ParameterType);
 
                 yield return Instruction.Create(OpCodes.Stelem_Ref);

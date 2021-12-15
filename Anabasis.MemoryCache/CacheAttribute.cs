@@ -10,7 +10,6 @@ namespace Anabasis.MemoryCache
 		}
 
 		public double AbsoluteExpirationRelativeToNow { get; set; }
-
 		public double SlidingExpiration { get; set; }
 	}
 }

@@ -4,77 +4,21 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Anabasis.MemoryCache.Test
 {
-	public static class TestHelpers
-	{
-		public static dynamic CreateInstance<T>(Assembly assembly, object parameter)
-		{
-			if (null == parameter)
-				return Activator.CreateInstance(CreateType<T>(assembly));
-
-			return Activator.CreateInstance(CreateType<T>(assembly), parameter);
-		}
-
-		private static Type CreateType<T>(Assembly assembly)
-		{
-			return assembly.GetType(typeof(T).FullName ?? string.Empty);
-		}
-	}
 
 	[NonParallelizable]
-	public class MemoryCacheBasicTests
+	public class MemoryCacheGenericTests
 	{
-        class TestBackend : ICachingBackend
-        {
-
-			public Dictionary<string, object> Cache = new();
-
-            public Task Clear(CancellationToken cancellationToken = default)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Task Invalidate(string key)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Task InvalidateWhenContains(string predicate, bool isCaseSensitive = true)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Task InvalidateWhenContains(string[] predicates, bool isCaseSensitive = true)
-            {
-                throw new NotImplementedException();
-            }
-
-            public Task InvalidateWhenStartWith(string[] predicates, bool isCaseSensitive = true)
-            {
-                throw new NotImplementedException();
-            }
-
-            public void SetValue<TItem>(string key, TItem value)
-            {
-				Cache.Add(key, value);
-			}
-
-            public bool TryGetValue<TItem>(string key, out TItem value)
-            {
-				value = default;
-				return false;
-            }
-        }
-
 
         private static TestResult TestResult { get; }
 
-		static MemoryCacheBasicTests()
+		static MemoryCacheGenericTests()
 		{
 			var weavingTask = new ModuleWeaver();
 
@@ -85,50 +29,78 @@ namespace Anabasis.MemoryCache.Test
 		[SetUp]
 		public void Setup()
         {
+			CachingServices.KeyBuilder = new TestCacheKeyBuilder();
 			CachingServices.Backend = new TestBackend();
 		}
 
 		[Test]
 		public void ShouldTestReferenceTypeMethod()
 		{
-			dynamic instance = TestHelpers.CreateInstance<TestClassSimple>(MemoryCacheBasicTests.TestResult.Assembly, null);
+			dynamic instance = TestHelpers.CreateInstance<TestClassSimple>(MemoryCacheGenericTests.TestResult.Assembly, null);
 
 			var result = instance.TestReferenceTypeMethod("1", "2");
 
 			Assert.NotNull(result);
-	
+
+			var hasValue = CachingServices.Backend.TryGetValue(
+				"Anabasis.MemoryCache.Test.TestClassSimple.TestReferenceTypeMethod|String|1;String|2",
+				out string cacheValue);
+
+			Assert.True(hasValue);
+			Assert.AreEqual("12", cacheValue);
 		}
 
 		[Test]
 		public void ShouldTestReferenceTypeMethod2()
 		{
-			dynamic instance = TestHelpers.CreateInstance<TestClassSimple>(MemoryCacheBasicTests.TestResult.Assembly, null);
+			dynamic instance = TestHelpers.CreateInstance<TestClassSimple>(MemoryCacheGenericTests.TestResult.Assembly, null);
 
 			var result = instance.TestReferenceTypeMethod2(new object(), new object());
 
 			Assert.NotNull(result);
+
+			var hasValue = CachingServices.Backend.TryGetValue(
+				"Anabasis.MemoryCache.Test.TestClassSimple.TestReferenceTypeMethod2|Object|System.Object;Object|System.Object",
+				out string cacheValue);
+
+			Assert.True(hasValue);
+			Assert.AreEqual("System.ObjectSystem.Object", cacheValue);
 
 		}
 
 		[Test]
 		public void ShouldTestValueTypeMethod()
 		{
-			dynamic instance = TestHelpers.CreateInstance<TestClassSimple>(MemoryCacheBasicTests.TestResult.Assembly, null);
+			dynamic instance = TestHelpers.CreateInstance<TestClassSimple>(MemoryCacheGenericTests.TestResult.Assembly, null);
 
 			var result = instance.TestValueTypeMethod(1, 2);
 
 			Assert.NotNull(result);
+
+			var hasValue = CachingServices.Backend.TryGetValue(
+				"Anabasis.MemoryCache.Test.TestClassSimple.TestValueTypeMethod|Int32|1;Int32|2",
+				out string cacheValue);
+
+			Assert.True(hasValue);
+			Assert.AreEqual("3", cacheValue);
 
 		}
 
 		[Test]
 		public void ShouldTestNoCacheMethode()
 		{
-			dynamic instance = TestHelpers.CreateInstance<TestClassSimple>(MemoryCacheBasicTests.TestResult.Assembly, null);
+			dynamic instance = TestHelpers.CreateInstance<TestClassSimple>(MemoryCacheGenericTests.TestResult.Assembly, null);
 
 			var result = instance.TestNoCacheMethod(1, 2);
 
 			Assert.NotNull(result);
+
+			var hasValue = CachingServices.Backend.TryGetValue(
+				"Anabasis.MemoryCache.Test.TestClassSimple.TestValueTypeMethod|Int32|1;Int32|2",
+				out string cacheValue);
+
+			Assert.False(hasValue);
+			Assert.Null(cacheValue);
 
 		}
 
