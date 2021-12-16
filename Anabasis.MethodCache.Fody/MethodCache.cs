@@ -5,7 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Anabasis.MemoryCache.Fody
+namespace Anabasis.MethodCache.Fody
 {
     public static class MethodCache
     {
@@ -44,7 +44,7 @@ namespace Anabasis.MemoryCache.Fody
             }
 
         }
-
+        //https://github.com/SpatialFocus/MethodCache.Fody/blob/695cde0768722032865e35ec06c72db7eaff57f9/src/SpatialFocus.MethodCache.Fody/MemoryCache.cs#L226
         private static string CreateCacheKeyMethodName(MethodDefinition methodDefinition)
         {
             var builder = new StringBuilder();
@@ -63,7 +63,7 @@ namespace Anabasis.MemoryCache.Fody
             if (declaringType.GenericParameters.Any())
             {
                 builder.Append('<');
-                builder.Append(string.Join(", ", declaringType.GenericParameters.Select(x => x.FullName)));
+                builder.Append(string.Join(", ", declaringType.GenericParameters.Select(genericParameter => genericParameter.FullName)));
                 builder.Append('>');
             }
 
@@ -73,7 +73,7 @@ namespace Anabasis.MemoryCache.Fody
             if (methodDefinition.GenericParameters.Any())
             {
                 builder.Append('<');
-                builder.Append(string.Join(", ", methodDefinition.GenericParameters.Select(x => x.FullName)));
+                builder.Append(string.Join(", ", methodDefinition.GenericParameters.Select(genericParameter => genericParameter.FullName)));
                 builder.Append('>');
             }
 
@@ -134,6 +134,8 @@ namespace Anabasis.MemoryCache.Fody
             yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
             yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
             yield return Instruction.Create(OpCodes.Ldloca, cacheValueVariable);
+
+       
             yield return Instruction.Create(OpCodes.Callvirt, references.GetTryGetValue(method.ReturnType));
             yield return Instruction.Create(OpCodes.Stloc, hasCacheValue);
             yield return Instruction.Create(OpCodes.Ldloc, hasCacheValue);

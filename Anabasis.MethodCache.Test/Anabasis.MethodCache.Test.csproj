@@ -5,8 +5,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Anabasis.MemoryCache.Fody\Anabasis.MemoryCache.Fody.csproj" />
-    <ProjectReference Include="..\Anabasis.MemoryCache.Test.Assembly\Anabasis.MemoryCache.Test.Assembly.csproj" />
+    <ProjectReference Include="..\Anabasis.MethodCache.Fody\Anabasis.MethodCache.Fody.csproj" />
+    <ProjectReference Include="..\Anabasis.MethodCache.Test.Assembly\Anabasis.MethodCache.Test.Assembly.csproj" />
   </ItemGroup>
 
   <ItemGroup>

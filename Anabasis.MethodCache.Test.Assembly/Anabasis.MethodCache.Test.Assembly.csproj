@@ -5,7 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Anabasis.MemoryCache\Anabasis.MemoryCache.csproj" />
+    <ProjectReference Include="..\Anabasis.MethodCache\Anabasis.MethodCache.csproj" />
   </ItemGroup>
 
 

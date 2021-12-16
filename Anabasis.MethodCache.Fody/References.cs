@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Runtime.CompilerServices;
 
-namespace Anabasis.MemoryCache.Fody
+namespace Anabasis.MethodCache.Fody
 {
     public class References
 	{
@@ -15,13 +15,13 @@ namespace Anabasis.MemoryCache.Fody
 		{
 			var references = new References(moduleWeaver);
 
-            var cachingServicesTypeDefinition = moduleWeaver.FindTypeDefinition("Anabasis.MemoryCache.CachingServices");
+            var cachingServicesTypeDefinition = moduleWeaver.FindTypeDefinition("Anabasis.MethodCache.CachingServices");
             references.CachingServicesTypeReference = moduleWeaver.ModuleDefinition.ImportReference(cachingServicesTypeDefinition);
 
-            var cacheKeyBuilderTypeDefinition = moduleWeaver.FindTypeDefinition("Anabasis.MemoryCache.ICacheKeyBuilder");
+            var cacheKeyBuilderTypeDefinition = moduleWeaver.FindTypeDefinition("Anabasis.MethodCache.ICacheKeyBuilder");
             references.ICacheKeyBuilderTypeReference = moduleWeaver.ModuleDefinition.ImportReference(cacheKeyBuilderTypeDefinition);
 
-            var cachingBackendTypeDefinition = moduleWeaver.FindTypeDefinition("Anabasis.MemoryCache.ICachingBackend");
+            var cachingBackendTypeDefinition = moduleWeaver.FindTypeDefinition("Anabasis.MethodCache.ICachingBackend");
             references.ICachingBackendTypeReference = moduleWeaver.ModuleDefinition.ImportReference(cachingBackendTypeDefinition);
 
             var getCacheKeyBuilderTypeDefinition = cachingServicesTypeDefinition.Properties.Single(propertyDefinition=> propertyDefinition.Name == "KeyBuilder").GetMethod;
@@ -39,7 +39,7 @@ namespace Anabasis.MemoryCache.Fody
             var setValueMethodDefinition = cachingBackendTypeDefinition.Methods.Single(methodDefinition => methodDefinition.Name == "SetValue");
             references.SetValueMethodReference = moduleWeaver.ModuleDefinition.ImportReference(setValueMethodDefinition);
 
-            var cacheAttributeType = moduleWeaver.FindTypeDefinition("Anabasis.MemoryCache.CacheAttribute");
+            var cacheAttributeType = moduleWeaver.FindTypeDefinition("Anabasis.MethodCache.CacheAttribute");
 			references.CacheAttributeType = moduleWeaver.ModuleDefinition.ImportReference(cacheAttributeType);
 
             references.DebugWriteLineStringMethodReference = moduleWeaver.ModuleDefinition.ImportReference(typeof(System.Diagnostics.Debug)

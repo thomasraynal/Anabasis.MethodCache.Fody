@@ -2,7 +2,7 @@
 using System.Linq;
 using Mono.Cecil;
 
-namespace Anabasis.MemoryCache.Fody
+namespace Anabasis.MethodCache.Fody
 {
 	//https://github.com/SpatialFocus/MethodCache.Fody/blob/master/src/SpatialFocus.MethodCache.Fody/Extensions/MethodDefinitionExtension.cs
 	public static class MethodDefinitionExtension

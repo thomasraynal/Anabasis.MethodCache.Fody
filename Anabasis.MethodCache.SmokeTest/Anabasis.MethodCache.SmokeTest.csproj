@@ -4,7 +4,7 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Anabasis.MemoryCache.Fody\Anabasis.MemoryCache.Fody.csproj" />
+    <ProjectReference Include="..\Anabasis.MethodCache.Fody\Anabasis.MethodCache.Fody.csproj" />
   </ItemGroup>
   <ItemGroup>
     <WeaverFiles Include="$(SolutionDir)src\Anabasis.MethodCache.Fody\bin\$(Configuration)\netstandard2.0\Anabasis.MethodCache.Fody.dll" />

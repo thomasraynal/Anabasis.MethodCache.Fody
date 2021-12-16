@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Anabasis.MemoryCache.Fody
+namespace Anabasis.MethodCache.Fody
 {
 	//https://github.com/SpatialFocus/MethodCache.Fody/blob/master/src/SpatialFocus.MethodCache.Fody/Extensions/ModuleDefinitionExtension.cs
 	public static class ModuleDefinitionExtension

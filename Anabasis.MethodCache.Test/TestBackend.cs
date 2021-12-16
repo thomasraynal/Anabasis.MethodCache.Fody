@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Anabasis.MemoryCache.Test
+namespace Anabasis.MethodCache.Test
 {
     public class TestBackend : ICachingBackend
     {

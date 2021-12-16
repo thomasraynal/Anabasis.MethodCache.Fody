@@ -2,7 +2,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Anabasis.MemoryCache.Fody
+namespace Anabasis.MethodCache.Fody
 {
     public partial class ModuleWeaver : BaseModuleWeaver
     {
@@ -24,7 +24,7 @@ namespace Anabasis.MemoryCache.Fody
             yield return "netstandard";
             yield return "mscorlib";
             yield return "Microsoft.Extensions.Caching.Abstractions";
-            yield return "Anabasis.MemoryCache";
+            yield return "Anabasis.MethodCache";
         }
     }
 }
