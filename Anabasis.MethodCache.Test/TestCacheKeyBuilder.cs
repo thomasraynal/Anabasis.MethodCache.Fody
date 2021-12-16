@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Anabasis.MemoryCache.Test
+namespace Anabasis.MethodCache.Test
 {
 	public class TestCacheKeyBuilder : ICacheKeyBuilder
 	{

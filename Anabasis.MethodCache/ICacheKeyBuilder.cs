@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Anabasis.MemoryCache
+namespace Anabasis.MethodCache
 {
 	public interface ICacheKeyBuilder
 	{

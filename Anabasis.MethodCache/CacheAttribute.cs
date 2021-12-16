@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Anabasis.MemoryCache
+namespace Anabasis.MethodCache
 {
 	[AttributeUsage(AttributeTargets.Method | AttributeTargets.Class, Inherited = false)]
 	public sealed class CacheAttribute : Attribute
