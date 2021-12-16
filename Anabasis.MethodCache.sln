@@ -5,13 +5,18 @@ VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache", "Anabasis.MethodCache\Anabasis.MethodCache.csproj", "{4FFC2A35-CBAB-4058-AC81-8E961914AEAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anabasis.MethodCache.Fody", "Anabasis.MethodCache.Fody\Anabasis.MethodCache.Fody.csproj", "{A5A267CA-BE1C-48A5-A9E3-77692A00CFD5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache.Fody", "Anabasis.MethodCache.Fody\Anabasis.MethodCache.Fody.csproj", "{A5A267CA-BE1C-48A5-A9E3-77692A00CFD5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anabasis.MethodCache.Test.Assembly", "Anabasis.MethodCache.Test.Assembly\Anabasis.MethodCache.Test.Assembly.csproj", "{DF6E227A-4D73-486D-ADA1-A0944AEE7E97}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache.Test.Assembly", "Anabasis.MethodCache.Test.Assembly\Anabasis.MethodCache.Test.Assembly.csproj", "{DF6E227A-4D73-486D-ADA1-A0944AEE7E97}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anabasis.MethodCache.Test", "Anabasis.MethodCache.Test\Anabasis.MethodCache.Test.csproj", "{4F9C9B73-DAA8-4E82-8BE6-AEB5ED1E7118}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache.Test", "Anabasis.MethodCache.Test\Anabasis.MethodCache.Test.csproj", "{4F9C9B73-DAA8-4E82-8BE6-AEB5ED1E7118}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache.SmokeTest", "Anabasis.MethodCache.SmokeTest\Anabasis.MethodCache.SmokeTest.csproj", "{D1DB90D2-DDAC-4F5E-86FA-2D711874F21A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3BD1D21E-7E50-48D5-B0DA-7BC5E8F0DCAD}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,6 +1,7 @@
 ﻿using Mono.Cecil;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace Anabasis.MethodCache.Fody
 {
@@ -51,6 +52,12 @@ namespace Anabasis.MethodCache.Fody
             var compilerGeneratedAttributeType = moduleWeaver.FindTypeDefinition(typeof(CompilerGeneratedAttribute).FullName);
             references.CompilerGeneratedAttributeType = moduleWeaver.ModuleDefinition.ImportReference(compilerGeneratedAttributeType);
 
+            var taskGenericTypeReference = moduleWeaver.FindTypeDefinition(typeof(Task<>).FullName);
+            references.TaskGenericTypeReference = moduleWeaver.ModuleDefinition.ImportReference(taskGenericTypeReference);
+
+            var taskTypeReference = moduleWeaver.FindTypeDefinition(typeof(Task).FullName);
+            references.TaskGenericTypeReference = moduleWeaver.ModuleDefinition.ImportReference(taskTypeReference);
+
             return references;
 		}
 
@@ -64,10 +71,11 @@ namespace Anabasis.MethodCache.Fody
         public MethodReference GetCacheKeyBuilderTypeReference { get; private set; }
         public TypeReference ICachingBackendTypeReference { get; private set; }
         public MethodReference TryGetValueMethodReference { get; private set; }
-        public MethodReference GetTryGetValue(TypeReference type) => ModuleWeaver.ModuleDefinition.ImportReference(TryGetValueMethodReference.MakeGeneric(type));
-        public MethodReference GetSetValue(TypeReference type) => ModuleWeaver.ModuleDefinition.ImportReference(SetValueMethodReference.MakeGeneric(type));
+        public MethodReference GetTryGetValue(TypeReference type) => ModuleWeaver.ModuleDefinition.ImportReference(TryGetValueMethodReference.MakeGeneric(this,type));
+        public MethodReference GetSetValue(TypeReference type) => ModuleWeaver.ModuleDefinition.ImportReference(SetValueMethodReference.MakeGeneric(this, type));
         public MethodReference GetBackendTypeReference { get; private set; }
         public MethodReference SetValueMethodReference { get; private set; }
+        public TypeReference TaskGenericTypeReference { get; private set; }
     }
 
 }
