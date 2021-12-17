@@ -10,11 +10,19 @@ namespace Anabasis.MethodCache.Test
     public class Testing<TItem>
     {
         [Cache]
-        public string TestGenerics(TItem a, TItem b)
+        public async Task<string> TestGenerics(TItem a, TItem b)
         {
+            await Task.Delay(500);
+
+            Task<string> t = new Task<string>(()=> "");
+
             var ff = CachingServices.KeyBuilder.CreateKey("sdf", a, b);
 
-            return $"{a}{b}";
+            var result = $"{a}{b}";
+
+            CachingServices.Backend.SetValue("sdf", result);
+
+            return ff;
         }
     }
 }

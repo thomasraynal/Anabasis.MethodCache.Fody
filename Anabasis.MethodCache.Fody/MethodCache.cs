@@ -3,6 +3,7 @@ using Mono.Cecil.Cil;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Anabasis.MethodCache.Fody
@@ -82,48 +83,52 @@ namespace Anabasis.MethodCache.Fody
 
         private static IEnumerable<Instruction> WeaveSetCacheValue(
             References references,
-            MethodDefinition method,
+            MethodDefinition methodDefinition,
             VariableDefinition resultVariable,
             VariableDefinition cacheKeyVariable)
         {
+            var taskVariable = new VariableDefinition(methodDefinition.ReturnType);
 
+            methodDefinition.Body.Variables.Add(taskVariable);
+
+            yield return Instruction.Create(OpCodes.Stloc, taskVariable);
             yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
             yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
-            yield return Instruction.Create(OpCodes.Ldloc, resultVariable);
-            yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(method.ReturnType));
-
+            yield return Instruction.Create(OpCodes.Ldloc, taskVariable);
+            yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(methodDefinition.ReturnType));
+            yield return Instruction.Create(OpCodes.Ldloc, taskVariable);
         }
 
         private static IEnumerable<Instruction> WeaveTryGetCacheValue(
             ModuleDefinition moduleDefinition,
-            MethodDefinition method,
+            MethodDefinition methodDefinition,
             References references,
             Instruction firstNonWeaved,
             VariableDefinition cacheKeyVariable)
         {
-            var methodName = CreateCacheKeyMethodName(method);
+            var methodName = CreateCacheKeyMethodName(methodDefinition);
 
-            var cacheValueVariable = new VariableDefinition(moduleDefinition.TypeSystem.String);
+            var cacheValueVariable = new VariableDefinition(methodDefinition.ReturnType);
             var hasCacheValue = new VariableDefinition(moduleDefinition.TypeSystem.Boolean);
 
-            method.Body.Variables.Add(cacheKeyVariable);
-            method.Body.Variables.Add(cacheValueVariable);
-            method.Body.Variables.Add(hasCacheValue);
+            methodDefinition.Body.Variables.Add(cacheKeyVariable);
+            methodDefinition.Body.Variables.Add(cacheValueVariable);
+            methodDefinition.Body.Variables.Add(hasCacheValue);
 
             yield return Instruction.Create(OpCodes.Call, references.GetCacheKeyBuilderTypeReference);
 
             yield return Instruction.Create(OpCodes.Ldstr, methodName);
-            yield return Instruction.Create(OpCodes.Ldc_I4, method.Parameters.Count);
+            yield return Instruction.Create(OpCodes.Ldc_I4, methodDefinition.Parameters.Count);
             yield return Instruction.Create(OpCodes.Newarr, moduleDefinition.ImportReference(typeof(object)));
 
-            for (int i = 0; i < method.Parameters.Count; i++)
+            for (int i = 0; i < methodDefinition.Parameters.Count; i++)
             {
                 yield return Instruction.Create(OpCodes.Dup);
                 yield return Instruction.Create(OpCodes.Ldc_I4, i);
-                yield return Instruction.Create(OpCodes.Ldarg, method.Parameters[i]);
+                yield return Instruction.Create(OpCodes.Ldarg, methodDefinition.Parameters[i]);
 
-                if (method.Parameters[i].ParameterType.IsGenericParameter || method.Parameters[i].ParameterType.IsValueType)
-                    yield return Instruction.Create(OpCodes.Box, method.Parameters[i].ParameterType);
+                if (methodDefinition.Parameters[i].ParameterType.IsGenericParameter || methodDefinition.Parameters[i].ParameterType.IsValueType)
+                    yield return Instruction.Create(OpCodes.Box, methodDefinition.Parameters[i].ParameterType);
 
                 yield return Instruction.Create(OpCodes.Stelem_Ref);
             }
@@ -136,7 +141,7 @@ namespace Anabasis.MethodCache.Fody
             yield return Instruction.Create(OpCodes.Ldloca, cacheValueVariable);
 
        
-            yield return Instruction.Create(OpCodes.Callvirt, references.GetTryGetValue(method.ReturnType));
+            yield return Instruction.Create(OpCodes.Callvirt, references.GetTryGetValue(methodDefinition.ReturnType));
             yield return Instruction.Create(OpCodes.Stloc, hasCacheValue);
             yield return Instruction.Create(OpCodes.Ldloc, hasCacheValue);
 

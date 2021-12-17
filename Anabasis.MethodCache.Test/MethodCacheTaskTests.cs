@@ -44,10 +44,10 @@ namespace Anabasis.MethodCache.Test
 
 			var hasValue = CachingServices.Backend.TryGetValue(
 				"Anabasis.MethodCache.Test.TestClassTask.TestValueTypeMethod|Int32|1;Int32|2",
-				out string cacheValue);
+				out Task<string> cacheValue);
 
 			Assert.True(hasValue);
-			Assert.AreEqual("12", cacheValue);
+			Assert.AreEqual("12", await cacheValue);
 		}
 
 		[Test]
