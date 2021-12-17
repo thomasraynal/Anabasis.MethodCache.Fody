@@ -87,16 +87,27 @@ namespace Anabasis.MethodCache.Fody
             VariableDefinition resultVariable,
             VariableDefinition cacheKeyVariable)
         {
-            var taskVariable = new VariableDefinition(methodDefinition.ReturnType);
+            if (methodDefinition.ReturnType.IsTaskT(references))
+            {
+                var taskVariable = new VariableDefinition(methodDefinition.ReturnType);
+                methodDefinition.Body.Variables.Add(taskVariable);
 
-            methodDefinition.Body.Variables.Add(taskVariable);
+                yield return Instruction.Create(OpCodes.Stloc, taskVariable);
+                yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
+                yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
+                yield return Instruction.Create(OpCodes.Ldloc, taskVariable);
+                yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(methodDefinition.ReturnType));
+                yield return Instruction.Create(OpCodes.Ldloc, taskVariable);
 
-            yield return Instruction.Create(OpCodes.Stloc, taskVariable);
-            yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
-            yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
-            yield return Instruction.Create(OpCodes.Ldloc, taskVariable);
-            yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(methodDefinition.ReturnType));
-            yield return Instruction.Create(OpCodes.Ldloc, taskVariable);
+            }
+            else
+            {
+                yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
+                yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
+                yield return Instruction.Create(OpCodes.Ldloc, resultVariable);
+                yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(methodDefinition.ReturnType));
+            }
+
         }
 
         private static IEnumerable<Instruction> WeaveTryGetCacheValue(

@@ -47,7 +47,7 @@ namespace Anabasis.MethodCache.Test
 				out Task<string> cacheValue);
 
 			Assert.True(hasValue);
-			Assert.AreEqual("12", await cacheValue);
+			Assert.AreEqual("3", await cacheValue);
 		}
 
 		[Test]
@@ -61,10 +61,10 @@ namespace Anabasis.MethodCache.Test
 
 			var hasValue = CachingServices.Backend.TryGetValue(
 				"Anabasis.MethodCache.Test.TestClassTask.TestReferenceTypeMethod2|Object|System.Object;Object|System.Object",
-				out string cacheValue);
+				out Task<string> cacheValue);
 
 			Assert.True(hasValue);
-			Assert.AreEqual("System.ObjectSystem.Object", cacheValue);
+			Assert.AreEqual("System.ObjectSystem.Object", await cacheValue);
 
 		}
 
@@ -79,10 +79,10 @@ namespace Anabasis.MethodCache.Test
 
 			var hasValue = CachingServices.Backend.TryGetValue(
 				"Anabasis.MethodCache.Test.TestClassTask.TestReferenceTypeMethod|String|1;String|2",
-				out string cacheValue);
+				out Task<string> cacheValue);
 
 			Assert.True(hasValue);
-			Assert.AreEqual("3", cacheValue);
+			Assert.AreEqual("12", await cacheValue);
 
 		}
 
@@ -96,8 +96,8 @@ namespace Anabasis.MethodCache.Test
 			Assert.NotNull(result);
 
 			var hasValue = CachingServices.Backend.TryGetValue(
-				"Anabasis.MethodCache.Test.TestClassTask.TestGenerics|String|1;String|2",
-				out string cacheValue);
+				"SomeKey",
+				out Task<string> cacheValue);
 
 			Assert.False(hasValue);
 			Assert.Null(cacheValue);

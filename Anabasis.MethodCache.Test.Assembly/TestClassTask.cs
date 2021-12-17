@@ -28,34 +28,34 @@ namespace Anabasis.MethodCache.Test
             return $"{a + b}";
         }
 
-        //[Cache]
-        //public async Task<string> TestReferenceTypeMethod(string a, string b)
-        //{
-        //    Debug.WriteLine(nameof(TestReferenceTypeMethod));
+        [Cache]
+        public async Task<string> TestReferenceTypeMethod(string a, string b)
+        {
+            Debug.WriteLine(nameof(TestReferenceTypeMethod));
 
-        //    await Task.Delay(10);
+            await Task.Delay(10);
 
-        //    return a + b;
-        //}
+            return a + b;
+        }
 
-        //[Cache]
-        //public async Task<string> TestReferenceTypeMethod2(object a, object b)
-        //{
-        //    Debug.WriteLine(nameof(TestReferenceTypeMethod));
+        [Cache]
+        public async Task<string> TestReferenceTypeMethod2(object a, object b)
+        {
+            Debug.WriteLine(nameof(TestReferenceTypeMethod));
 
-        //    await Task.Delay(10);
+            await Task.Delay(10);
 
-        //    return a.ToString() + b.ToString();
-        //}
+            return a.ToString() + b.ToString();
+        }
 
-        //[Cache]
-        //public async Task<string> TestGenerics<TItem>(TItem a, TItem b)
-        //{
-        //    Debug.WriteLine(nameof(TestGenerics));
+        [Cache]
+        public async Task<string> TestGenerics<TItem>(TItem a, TItem b)
+        {
+            Debug.WriteLine(nameof(TestGenerics));
 
-        //    await Task.Delay(10);
+            await Task.Delay(10);
 
-        //    return $"{a}{b}";
-        //}
+            return $"{a}{b}";
+        }
     }
 }
