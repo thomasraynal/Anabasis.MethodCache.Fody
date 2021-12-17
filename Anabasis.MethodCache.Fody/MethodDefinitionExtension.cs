@@ -20,7 +20,7 @@ namespace Anabasis.MethodCache.Fody
 
 			var typeDefinition = references.CompilerGeneratedAttributeType.Resolve();
 
-			if (methodDefinition.ReturnType.Equals(methodDefinition.Module.TypeSystem.Void))
+			if (methodDefinition.ReturnType.Equals(methodDefinition.Module.TypeSystem.Void) || methodDefinition.ReturnType.Equals(references.TaskTypeReference))
 			{
 				return false;
 			}

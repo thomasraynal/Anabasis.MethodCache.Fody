@@ -104,6 +104,22 @@ namespace Anabasis.MethodCache.Test
 
 		}
 
+		[Test]
+		public async Task ShouldTestNoReturnValue()
+		{
+			dynamic instance = TestHelpers.CreateInstance<TestClassTask>(MethodCacheTaskTests.TestResult.Assembly, null);
+
+			await instance.TestNoReturnValue(1, 2);
+
+			var hasValue = CachingServices.Backend.TryGetValue(
+				"Anabasis.MethodCache.Test.TestClassTask.TestValueTypeMethod|Int32|1;Int32|2",
+				out Task<string> cacheValue);
+
+			Assert.False(hasValue);
+			Assert.Null(cacheValue);
+
+		}
+
 	}
 
 }

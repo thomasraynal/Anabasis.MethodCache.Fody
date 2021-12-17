@@ -10,13 +10,13 @@ namespace Anabasis.MethodCache.Test
     public class TestClassTask
     {
 
-        //[Cache]
-        //public async Task TestNoReturnValue(int a, int b)
-        //{
-        //    Debug.WriteLine(nameof(TestValueTypeMethod));
+        [Cache]
+        public async Task TestNoReturnValue(int a, int b)
+        {
+            Debug.WriteLine(nameof(TestValueTypeMethod));
 
-        //    await Task.Delay(10);
-        //}
+            await Task.Delay(10);
+        }
 
         [Cache]
         public async Task<string> TestValueTypeMethod(int a, int b)

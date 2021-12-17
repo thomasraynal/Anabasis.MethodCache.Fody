@@ -33,7 +33,7 @@ namespace Anabasis.MethodCache.Fody
 			var current = type;
 			while (current != null)
 			{
-				if (current is GenericInstanceType && ((GenericInstanceType)current).Resolve().GetElementType().CompareTo(references.TaskGenericTypeReference))
+				if (current is GenericInstanceType && ((GenericInstanceType)current).Resolve().GetElementType().CompareTo(references.TaskTypeReference))
 					return ((GenericInstanceType)current).GenericArguments.Single();
 				current = current.Resolve().BaseType;
 			}

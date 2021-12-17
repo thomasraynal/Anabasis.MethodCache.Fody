@@ -52,11 +52,8 @@ namespace Anabasis.MethodCache.Fody
             var compilerGeneratedAttributeType = moduleWeaver.FindTypeDefinition(typeof(CompilerGeneratedAttribute).FullName);
             references.CompilerGeneratedAttributeType = moduleWeaver.ModuleDefinition.ImportReference(compilerGeneratedAttributeType);
 
-            var taskGenericTypeReference = moduleWeaver.FindTypeDefinition(typeof(Task<>).FullName);
-            references.TaskGenericTypeReference = moduleWeaver.ModuleDefinition.ImportReference(taskGenericTypeReference);
-
             var taskTypeReference = moduleWeaver.FindTypeDefinition(typeof(Task).FullName);
-            references.TaskGenericTypeReference = moduleWeaver.ModuleDefinition.ImportReference(taskTypeReference);
+            references.TaskTypeReference = moduleWeaver.ModuleDefinition.ImportReference(taskTypeReference);
 
             return references;
 		}
@@ -75,7 +72,7 @@ namespace Anabasis.MethodCache.Fody
         public MethodReference GetSetValue(TypeReference type) => ModuleWeaver.ModuleDefinition.ImportReference(SetValueMethodReference.MakeGeneric(type));
         public MethodReference GetBackendTypeReference { get; private set; }
         public MethodReference SetValueMethodReference { get; private set; }
-        public TypeReference TaskGenericTypeReference { get; private set; }
+        public TypeReference TaskTypeReference { get; private set; }
     }
 
 }
