@@ -43,7 +43,7 @@ namespace Anabasis.MethodCache.Test
 			Assert.NotNull(result);
 
 			var hasValue = CachingServices.Backend.TryGetValue(
-				"Anabasis.MethodCache.Test.TestClassTask.TestValueTypeMethod|Int32|1;Int32|2",
+				"Anabasis.MethodCache.Test.TestClassTask.TestValueTypeMethod|a|1;b|2",
 				out Task<string> cacheValue);
 
 			Assert.True(hasValue);
@@ -60,7 +60,7 @@ namespace Anabasis.MethodCache.Test
 			Assert.NotNull(result);
 
 			var hasValue = CachingServices.Backend.TryGetValue(
-				"Anabasis.MethodCache.Test.TestClassTask.TestReferenceTypeMethod2|Object|System.Object;Object|System.Object",
+				"Anabasis.MethodCache.Test.TestClassTask.TestReferenceTypeMethod2|a|System.Object;b|System.Object",
 				out Task<string> cacheValue);
 
 			Assert.True(hasValue);
@@ -78,7 +78,7 @@ namespace Anabasis.MethodCache.Test
 			Assert.NotNull(result);
 
 			var hasValue = CachingServices.Backend.TryGetValue(
-				"Anabasis.MethodCache.Test.TestClassTask.TestReferenceTypeMethod|String|1;String|2",
+				"Anabasis.MethodCache.Test.TestClassTask.TestReferenceTypeMethod|a|1;b|2",
 				out Task<string> cacheValue);
 
 			Assert.True(hasValue);
@@ -112,7 +112,7 @@ namespace Anabasis.MethodCache.Test
 			await instance.TestNoReturnValue(1, 2);
 
 			var hasValue = CachingServices.Backend.TryGetValue(
-				"Anabasis.MethodCache.Test.TestClassTask.TestValueTypeMethod|Int32|1;Int32|2",
+				"Anabasis.MethodCache.Test.TestClassTask.TestValueTypeMethod|a|1;b|2",
 				out Task<string> cacheValue);
 
 			Assert.False(hasValue);

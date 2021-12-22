@@ -7,22 +7,33 @@ namespace Anabasis.MethodCache
 {
 	public class DefaultCacheKeyBuilder : ICacheKeyBuilder
 	{
-		private string GetParameterCacheKey(object parameter)
-        {
-			if (null == parameter) return "null";
+		private string GetParameterCacheKey(string parameterName, object parameterValue)
+		{
+			return $"{parameterName}|{parameterValue ?? "null"}";
+		}
 
-			var type = parameter.GetType();
+		public string CreateKey(string methodName, string[] argumentNames = null, object[] argumentValues = null)
+		{
 
-			return $"{type.Name}|{parameter}";
-        }
+			var key = methodName;
 
-        public string CreateKey(string methodName, params object[] parameters)
-        {
-			return
-				methodName + "|" +
-				parameters
-					.Select(methodParameter => GetParameterCacheKey(methodParameter))
-					.Aggregate((methodParameter1, methodParameter2) => $"{methodParameter1};{methodParameter2}");
+			if (null == argumentNames) return key;
+
+			key += "|";
+
+			var valueIndex = 0;
+
+			foreach (var argumentName in argumentNames)
+			{
+				var argumentValue = argumentValues[valueIndex];
+
+				key += GetParameterCacheKey(argumentName, argumentValue);
+				key += ";";
+				valueIndex++;
+			}
+
+			return key.TrimEnd(';');
+
 		}
     }
 }

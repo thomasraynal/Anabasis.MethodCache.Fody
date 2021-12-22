@@ -8,22 +8,33 @@ namespace Anabasis.MethodCache.Test
 {
 	public class TestCacheKeyBuilder : ICacheKeyBuilder
 	{
-		private string GetParameterCacheKey(object parameter)
+		private string GetParameterCacheKey(string parameterName, object parameterValue)
 		{
-			if (null == parameter) return "null";
-
-			var type = parameter.GetType();
-
-			return $"{type.Name}|{parameter}";
+			return $"{parameterName}|{parameterValue ?? "null"}";
 		}
 
-		public string CreateKey(string methodName, params object[] parameters)
+		public string CreateKey(string methodName, string[] argumentNames = null, object[] argumentValues = null)
 		{
-			return
-				methodName + "|" +
-				parameters
-					.Select(methodParameter => GetParameterCacheKey(methodParameter))
-					.Aggregate((methodParameter1, methodParameter2) => $"{methodParameter1};{methodParameter2}");
+
+			var key = methodName;
+
+			if (null == argumentNames) return key;
+
+			key += "|";
+
+			var valueIndex = 0;
+
+			foreach (var argumentName in argumentNames)
+			{
+				var argumentValue = argumentValues[valueIndex];
+
+				key += GetParameterCacheKey(argumentName, argumentValue);
+				key += ";";
+				valueIndex++;
+			}
+
+			return key.TrimEnd(';');
+
 		}
 	}
 }

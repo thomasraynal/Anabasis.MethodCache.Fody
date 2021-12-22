@@ -43,7 +43,7 @@ namespace Anabasis.MethodCache.Test
 			Assert.NotNull(result);
 
 			var hasValue = CachingServices.Backend.TryGetValue(
-				"Anabasis.MethodCache.Test.TestClassGenererics<TItem>.TestGenerics|Int32|1;Int32|2",
+				"Anabasis.MethodCache.Test.TestClassGenererics<TItem>.TestGenerics|a|1;b|2",
 				out string cacheValue);
 
 			Assert.True(hasValue);
@@ -60,7 +60,7 @@ namespace Anabasis.MethodCache.Test
 			Assert.NotNull(result);
 
 			var hasValue = CachingServices.Backend.TryGetValue(
-				"Anabasis.MethodCache.Test.TestClassGenererics<TItem>.TestMethodGenerics<TItem2>|Int32|1;Int32|2",
+				"Anabasis.MethodCache.Test.TestClassGenererics<TItem>.TestMethodGenerics<TItem2>|a|1;b|2",
 				out string cacheValue);
 
 			Assert.True(hasValue);
@@ -78,7 +78,7 @@ namespace Anabasis.MethodCache.Test
 			Assert.NotNull(result);
 
 			var hasValue = CachingServices.Backend.TryGetValue(
-				"Anabasis.MethodCache.Test.TestClassGenererics<TItem>.TestMethodGenerics2<TItem2>|Int32|1;Int32|2",
+				"Anabasis.MethodCache.Test.TestClassGenererics<TItem>.TestMethodGenerics2<TItem2>|a|1;b|2",
 				out string cacheValue);
 
 			Assert.True(hasValue);
@@ -96,7 +96,7 @@ namespace Anabasis.MethodCache.Test
 			Assert.NotNull(result);
 
 			var hasValue = CachingServices.Backend.TryGetValue(
-				"Anabasis.MethodCache.Test.TestClassGenererics<TItem>.TestMethodGenerics2<TItem2>|Int32|2;String|dfs",
+				"Anabasis.MethodCache.Test.TestClassGenererics<TItem>.TestMethodGenerics2<TItem2>|a|2;b|dfs",
 				out string cacheValue);
 
 			Assert.True(hasValue);

@@ -16,8 +16,11 @@ namespace Anabasis.MethodCache.Test
 
             Task<string> t = new Task<string>(()=> "");
 
-            var ff = CachingServices.KeyBuilder.CreateKey("sdf", a, b);
+            var argumentNames = new string[] { "a", "b" };
+            var argumentValues = new object[] { a, b };
 
+            var ff = CachingServices.KeyBuilder.CreateKey("sdf", argumentNames, argumentValues);
+            
             var result = $"{a}{b}";
 
             CachingServices.Backend.SetValue("sdf", result);

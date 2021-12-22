@@ -128,7 +128,22 @@ namespace Anabasis.MethodCache.Fody
 
             yield return Instruction.Create(OpCodes.Call, references.GetCacheKeyBuilderTypeReference);
 
+            //method name
             yield return Instruction.Create(OpCodes.Ldstr, methodName);
+
+            //arguments names
+            yield return Instruction.Create(OpCodes.Ldc_I4, methodDefinition.Parameters.Count);
+            yield return Instruction.Create(OpCodes.Newarr, moduleDefinition.ImportReference(typeof(string)));
+
+            for (int i = 0; i < methodDefinition.Parameters.Count; i++)
+            {
+                yield return Instruction.Create(OpCodes.Dup);
+                yield return Instruction.Create(OpCodes.Ldc_I4, i);
+                yield return Instruction.Create(OpCodes.Ldstr, methodDefinition.Parameters[i].Name);
+                yield return Instruction.Create(OpCodes.Stelem_Ref);
+            }
+
+            //arguments values
             yield return Instruction.Create(OpCodes.Ldc_I4, methodDefinition.Parameters.Count);
             yield return Instruction.Create(OpCodes.Newarr, moduleDefinition.ImportReference(typeof(object)));
 
