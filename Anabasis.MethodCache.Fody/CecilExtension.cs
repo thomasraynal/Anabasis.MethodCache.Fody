@@ -10,13 +10,13 @@ namespace Anabasis.MethodCache.Fody
 	//https://github.com/SpatialFocus/MethodCache.Fody/blob/master/src/SpatialFocus.MethodCache.Fody/Extensions/CecilExtension.cs
 	public static class CecilExtension
 	{
-
+		
 		public static bool CompareTo(this TypeReference type, TypeReference compareTo)
 		{
 			return type.FullName == compareTo.FullName;
 		}
 
-		public static bool IsTaskT(this TypeReference type, References references)
+		public static bool IsTaskT(this TypeReference type)
 		{
 			var current = type;
 			while (current != null)
@@ -28,6 +28,18 @@ namespace Anabasis.MethodCache.Fody
 			return false;
 		}
 
+		public static bool IsValueTaskT(this TypeReference type)
+		{
+			var current = type;
+			while (current != null)
+			{
+				if (current is GenericInstanceType && ((GenericInstanceType)current).Resolve().GetElementType().Name == "ValueTask`1")
+					return true;
+				current = current.Resolve().BaseType;
+			}
+			return false;
+		}
+		
 		public static TypeReference GetTaskType(this TypeReference type, References references)
 		{
 			var current = type;

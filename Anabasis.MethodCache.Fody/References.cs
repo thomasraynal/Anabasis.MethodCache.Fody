@@ -55,6 +55,9 @@ namespace Anabasis.MethodCache.Fody
             var taskTypeReference = moduleWeaver.FindTypeDefinition(typeof(Task).FullName);
             references.TaskTypeReference = moduleWeaver.ModuleDefinition.ImportReference(taskTypeReference);
 
+            var valueTaskTypeReference = moduleWeaver.FindTypeDefinition("System.Threading.Tasks.ValueTask");
+            references.ValueTaskTypeReference = moduleWeaver.ModuleDefinition.ImportReference(valueTaskTypeReference);
+
             return references;
 		}
 
@@ -73,6 +76,7 @@ namespace Anabasis.MethodCache.Fody
         public MethodReference GetBackendTypeReference { get; private set; }
         public MethodReference SetValueMethodReference { get; private set; }
         public TypeReference TaskTypeReference { get; private set; }
+        public TypeReference ValueTaskTypeReference { get; private set; }
     }
 
 }

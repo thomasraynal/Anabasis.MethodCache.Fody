@@ -23,7 +23,7 @@ namespace Anabasis.MethodCache.Fody
         {
             yield return "netstandard";
             yield return "mscorlib";
-            yield return "Microsoft.Extensions.Caching.Abstractions";
+            yield return "System.Threading.Tasks.Extensions";
             yield return "Anabasis.MethodCache";
         }
     }

@@ -87,7 +87,7 @@ namespace Anabasis.MethodCache.Fody
             VariableDefinition resultVariable,
             VariableDefinition cacheKeyVariable)
         {
-            if (methodDefinition.ReturnType.IsTaskT(references))
+            if (methodDefinition.ReturnType.IsTaskT() || methodDefinition.ReturnType.IsValueTaskT())
             {
                 var taskVariable = new VariableDefinition(methodDefinition.ReturnType);
                 methodDefinition.Body.Variables.Add(taskVariable);
@@ -100,6 +100,18 @@ namespace Anabasis.MethodCache.Fody
                 yield return Instruction.Create(OpCodes.Ldloc, taskVariable);
 
             }
+            //else if ()
+            //{
+            //    var valueTaskVariable = new VariableDefinition(methodDefinition.ReturnType);
+            //    methodDefinition.Body.Variables.Add(valueTaskVariable);
+
+            //    yield return Instruction.Create(OpCodes.Stloc, valueTaskVariable);
+            //    yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
+            //    yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
+            //    yield return Instruction.Create(OpCodes.Ldloc, valueTaskVariable);
+            //    yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(methodDefinition.ReturnType));
+            //    yield return Instruction.Create(OpCodes.Ldloc, valueTaskVariable);
+            //}
             else
             {
                 yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);

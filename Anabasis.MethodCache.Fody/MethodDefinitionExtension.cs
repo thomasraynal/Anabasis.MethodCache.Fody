@@ -20,12 +20,14 @@ namespace Anabasis.MethodCache.Fody
 
 			var typeDefinition = references.CompilerGeneratedAttributeType.Resolve();
 
-			if (methodDefinition.ReturnType.Equals(methodDefinition.Module.TypeSystem.Void) || methodDefinition.ReturnType.Equals(references.TaskTypeReference))
+			if (methodDefinition.ReturnType.Equals(methodDefinition.Module.TypeSystem.Void) || 
+				methodDefinition.ReturnType.Equals(references.TaskTypeReference) ||
+				methodDefinition.ReturnType.FullName.Equals(references.ValueTaskTypeReference.FullName))
 			{
 				return false;
 			}
 
-			var hasOutParameter = methodDefinition.Parameters.Any(x => x.IsOut);
+			var hasOutParameter = methodDefinition.Parameters.Any(parameterDefinition => parameterDefinition.IsOut);
 
 			var isSpecialName = methodDefinition.IsSpecialName || methodDefinition.IsGetter || methodDefinition.IsSetter ||
 				methodDefinition.IsConstructor;
