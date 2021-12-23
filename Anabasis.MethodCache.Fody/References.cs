@@ -43,6 +43,9 @@ namespace Anabasis.MethodCache.Fody
             var cacheAttributeType = moduleWeaver.FindTypeDefinition("Anabasis.MethodCache.CacheAttribute");
 			references.CacheAttributeType = moduleWeaver.ModuleDefinition.ImportReference(cacheAttributeType);
 
+            var noKeyAttributeTypeReference = moduleWeaver.FindTypeDefinition("Anabasis.MethodCache.NoKeyAttribute");
+            references.NoKeyAttributeTypeReference = moduleWeaver.ModuleDefinition.ImportReference(noKeyAttributeTypeReference);
+
             references.DebugWriteLineStringMethodReference = moduleWeaver.ModuleDefinition.ImportReference(typeof(System.Diagnostics.Debug)
                                             .GetMethods()
                                             .First(methodInfo => methodInfo.Name == nameof(System.Diagnostics.Debug.WriteLine) &&
@@ -77,6 +80,7 @@ namespace Anabasis.MethodCache.Fody
         public MethodReference SetValueMethodReference { get; private set; }
         public TypeReference TaskTypeReference { get; private set; }
         public TypeReference ValueTaskTypeReference { get; private set; }
+        public TypeReference NoKeyAttributeTypeReference { get; internal set; }
     }
 
 }
