@@ -28,6 +28,18 @@ namespace Anabasis.MethodCache.Fody
 			return false;
 		}
 
+		public static bool IsEnumerableT(this TypeReference type)
+		{
+			var current = type;
+			while (current != null)
+			{
+				if (current is GenericInstanceType && ((GenericInstanceType)current).Resolve().GetElementType().Name == "IEnumerable`1")
+					return true;
+				current = current.Resolve().BaseType;
+			}
+			return false;
+		}
+
 		public static bool IsValueTaskT(this TypeReference type)
 		{
 			var current = type;

@@ -71,6 +71,26 @@ namespace Anabasis.MethodCache.Test
 
         public bool TryGetValue<TItem>(string key, out TItem value)
         {
+
+            var valueAdapter = _valueAdapters.FirstOrDefault(valueAdapter => valueAdapter.ValueAdapterType == typeof(TItem));
+
+            if (null != valueAdapter)
+            {
+                var hasValue = Cache.TryGetValue(key, out object obj);
+
+                if (!hasValue)
+                {
+                    value = default;
+                    return false;
+                }
+
+                var typedAdapter = (IValueAdapter<TItem>)valueAdapter;
+
+                value = typedAdapter.GetExposedValue(obj);
+
+                return true;
+            }
+
             return Cache.TryGetValue(key, out value);
         }
     }

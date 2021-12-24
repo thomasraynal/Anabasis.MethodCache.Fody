@@ -3,6 +3,7 @@ using Fody;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -41,30 +42,36 @@ namespace Anabasis.MethodCache.Test
 			Assert.NotNull(result);
 
 			var hasValue = CachingServices.Backend.TryGetValue(
-				"Anabasis.MethodCache.TestNoKeyAttribute.TestNoSecondParameter<TItem>|a|1",
-				out string cacheValue);
+				"Anabasis.MethodCache.TestValueAdapter.TestValueAdapterEnumerable|a|1;b|2",
+				out IEnumerable<string> cacheValue);
 
 			Assert.True(hasValue);
-			Assert.AreEqual("12", cacheValue);
+			Assert.AreEqual("ab", cacheValue.Aggregate((a,b)=> $"{a}{b}"));
 		}
 
 		[Test]
-		public void ShouldTesttreamValueAdapter()
+		public void ShouldTestStreamValueAdapter()
 		{
 
 			dynamic instance = TestHelpers.CreateInstance<TestValueAdapter>(MethodCacheValueAdapter.TestResult.Assembly, null);
 
-			var result = instance.TestValueAdapterStream("1", "2");
+			var result = (Stream)instance.TestValueAdapterStream("1", "2");
+
+			result.Dispose();
 
 			Assert.NotNull(result);
 
 			var hasValue = CachingServices.Backend.TryGetValue(
-				"Anabasis.MethodCache.TestNoKeyAttribute.TestNoFirstParameter<TItem>|b|System.Object",
-				out string cacheValue);
-
+				"Anabasis.MethodCache.TestValueAdapter.TestValueAdapterStream|a|1;b|2",
+				out Stream cacheValue);
+		
 			Assert.True(hasValue);
-			Assert.AreEqual("System.ObjectSystem.Object", cacheValue);
 
-		}
+            using var memoryStream = new MemoryStream();
+
+            cacheValue.CopyTo(memoryStream);
+            Assert.AreEqual("test", Encoding.UTF8.GetString(memoryStream.ToArray()));
+
+        }
 	}
 }

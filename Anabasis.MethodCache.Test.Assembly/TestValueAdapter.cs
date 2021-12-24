@@ -10,22 +10,22 @@ namespace Anabasis.MethodCache
 {
     public class TestValueAdapter
     {
-        //[Cache]
-        //public IEnumerable<string> TestValueAdapterEnumerable(string a, string b)
-        //{
-        //    Debug.WriteLine(nameof(TestValueAdapterEnumerable));
+        [Cache]
+        public IEnumerable<string> TestValueAdapterEnumerable(string a, string b)
+        {
+            Debug.WriteLine(nameof(TestValueAdapterEnumerable));
 
-        //    yield return "a";
-        //    yield return "b"; 
-        //}
+            yield return "a";
+            yield return "b"; 
+        }
 
-        //[Cache]
-        //public Stream TestValueAdapterStream(string a, string b)
-        //{
-        //    Debug.WriteLine(nameof(TestValueAdapterStream));
+        [Cache]
+        public Stream TestValueAdapterStream(string a, string b)
+        {
+            Debug.WriteLine(nameof(TestValueAdapterStream));
 
-        //    return new MemoryStream(Encoding.UTF8.GetBytes("test"));
-        //}
+            return new MemoryStream(Encoding.UTF8.GetBytes("test"));
+        }
 
     }
 }

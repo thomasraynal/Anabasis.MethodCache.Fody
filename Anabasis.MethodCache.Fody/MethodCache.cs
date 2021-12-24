@@ -25,8 +25,14 @@ namespace Anabasis.MethodCache.Fody
             processor.InsertBefore(current, first);
             current = first;
 
+            VariableDefinition resultVariable = null;
+
             var cacheKeyVariable = new VariableDefinition(moduleDefinition.TypeSystem.String);
-            var resultVariable = method.Body.Variables[method.Body.Variables.Count - 1];
+
+            if (!method.ReturnType.IsEnumerableT())
+            {
+                resultVariable = method.Body.Variables[method.Body.Variables.Count - 1];
+            }
 
             foreach (var instruction in WeaveTryGetCacheValue(moduleDefinition, method, references, firstNonWeaved, cacheKeyVariable))
             {
@@ -100,18 +106,18 @@ namespace Anabasis.MethodCache.Fody
                 yield return Instruction.Create(OpCodes.Ldloc, taskVariable);
 
             }
-            //else if ()
-            //{
-            //    var valueTaskVariable = new VariableDefinition(methodDefinition.ReturnType);
-            //    methodDefinition.Body.Variables.Add(valueTaskVariable);
+            else if (methodDefinition.ReturnType.IsEnumerableT())
+            {
+                var enumerableVariable = new VariableDefinition(methodDefinition.ReturnType);
+                methodDefinition.Body.Variables.Add(enumerableVariable);
 
-            //    yield return Instruction.Create(OpCodes.Stloc, valueTaskVariable);
-            //    yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
-            //    yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
-            //    yield return Instruction.Create(OpCodes.Ldloc, valueTaskVariable);
-            //    yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(methodDefinition.ReturnType));
-            //    yield return Instruction.Create(OpCodes.Ldloc, valueTaskVariable);
-            //}
+                yield return Instruction.Create(OpCodes.Stloc, enumerableVariable);
+                yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
+                yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
+                yield return Instruction.Create(OpCodes.Ldloc, enumerableVariable);
+                yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(methodDefinition.ReturnType));
+                yield return Instruction.Create(OpCodes.Ldloc, enumerableVariable);
+            }
             else
             {
                 yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
