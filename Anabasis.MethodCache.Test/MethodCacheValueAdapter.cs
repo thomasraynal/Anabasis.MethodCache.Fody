@@ -3,7 +3,6 @@ using Fody;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,12 +10,11 @@ using System.Threading.Tasks;
 namespace Anabasis.MethodCache.Test
 {
 	[NonParallelizable]
-	public class MethodCacheNoKeyTests
+    public class MethodCacheValueAdapter
 	{
-
 		private static TestResult TestResult { get; }
 
-		static MethodCacheNoKeyTests()
+		static MethodCacheValueAdapter()
 		{
 			var weavingTask = new ModuleWeaver();
 
@@ -29,14 +27,16 @@ namespace Anabasis.MethodCache.Test
 		{
 			CachingServices.KeyBuilder = new TestCacheKeyBuilder();
 			CachingServices.Backend = new TestBackend();
+
+			CachingServices.Backend.SetValueAdapter(new EnumerableValueAdapter<string>());
 		}
 
 		[Test]
-		public void ShouldNotUseSecondParameter()
+		public void ShouldTestEnumerableValueAdapter()
 		{
-			dynamic instance = TestHelpers.CreateInstance<TestNoKeyAttribute>(MethodCacheNoKeyTests.TestResult.Assembly, null);
+			dynamic instance = TestHelpers.CreateInstance<TestValueAdapter>(MethodCacheValueAdapter.TestResult.Assembly, null);
 
-			var result = instance.TestNoSecondParameter("1", "2");
+			var result = instance.TestValueAdapterEnumerable("1", "2");
 
 			Assert.NotNull(result);
 
@@ -49,12 +49,12 @@ namespace Anabasis.MethodCache.Test
 		}
 
 		[Test]
-		public void ShouldNotUseFirstParameter()
+		public void ShouldTesttreamValueAdapter()
 		{
-			
-			dynamic instance = TestHelpers.CreateInstance<TestNoKeyAttribute>(MethodCacheNoKeyTests.TestResult.Assembly, null);
 
-			var result = instance.TestNoFirstParameter(new object(), new object());
+			dynamic instance = TestHelpers.CreateInstance<TestValueAdapter>(MethodCacheValueAdapter.TestResult.Assembly, null);
+
+			var result = instance.TestValueAdapterStream("1", "2");
 
 			Assert.NotNull(result);
 

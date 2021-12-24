@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Caching.Memory;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -11,7 +12,19 @@ namespace Anabasis.MethodCache.Test
     public class TestBackend : ICachingBackend
     {
 
-        public Dictionary<string, object> Cache = new();
+        private readonly List<IValueAdapter> _valueAdapters = new List<IValueAdapter>()
+        {
+            new StreamValueAdapter()
+        };
+
+        public void SetValueAdapter<TAdapter>(TAdapter value) where TAdapter : IValueAdapter
+        {
+            _valueAdapters.Add(value);
+        }
+
+        public IMemoryCache Cache = new MemoryCache(new MemoryCacheOptions()
+        {
+        });
 
         public Task Clear(CancellationToken cancellationToken = default)
         {
@@ -40,20 +53,25 @@ namespace Anabasis.MethodCache.Test
 
         public void SetValue<TItem>(string key, TItem value)
         {
+            object storedValue = value;
 
-            Cache.Add(key, value);
+            var valueAdapter = _valueAdapters.FirstOrDefault(valueAdapter => valueAdapter.ValueAdapterType == typeof(TItem));
+
+            if (null != valueAdapter)
+            {
+
+                var typedAdapter = (IValueAdapter<TItem>)valueAdapter;
+
+                storedValue = typedAdapter.GetStoredValue(value);
+            }
+
+            Cache.Set(key, storedValue);
+
         }
 
         public bool TryGetValue<TItem>(string key, out TItem value)
         {
-            if (Cache.ContainsKey(key))
-            {
-                value = (TItem)Cache[key];
-                return true;
-            }
-
-            value = default;
-            return false;
+            return Cache.TryGetValue(key, out value);
         }
     }
 }

@@ -8,6 +8,11 @@ namespace Anabasis.MethodCache
 {
     public class InMemoryCachingBackend : ICachingBackend
     {
+        private readonly List<IValueAdapter> _valueAdapters = new List<IValueAdapter>()
+        {
+            new StreamValueAdapter()
+        };
+
 
         public Task Clear(CancellationToken cancellationToken = default)
         {
@@ -41,7 +46,12 @@ namespace Anabasis.MethodCache
 
         public void SetValue<TItem>(string key, TItem value)
         {
-      
+
+        }
+
+        public void SetValueAdapter<TAdapter>(TAdapter value) where TAdapter : IValueAdapter
+        {
+            _valueAdapters.Add(value);
         }
 
         public bool TryGetValue<TItem>(string key, out TItem value)
