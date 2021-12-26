@@ -15,6 +15,14 @@ namespace Anabasis.MethodCache.Fody
 				classAttribute => classAttribute.AttributeType.Resolve().Equals(cacheAttributeType));
 		}
 
+		public static CustomAttribute GetCacheAttribute(this MethodDefinition methodDefinition, References references)
+		{
+			var cacheAttributeType = references.CacheAttributeType.Resolve();
+
+			return methodDefinition.CustomAttributes.FirstOrDefault(
+				classAttribute => classAttribute.AttributeType.Resolve().Equals(cacheAttributeType));
+		}
+
 		public static bool IsEligibleForWeaving(this MethodDefinition methodDefinition, References references)
 		{
 

@@ -9,7 +9,7 @@ namespace Anabasis.MethodCache
 		{
 		}
 
-		public double AbsoluteExpirationRelativeToNow { get; set; }
-		public double SlidingExpiration { get; set; }
+		public long AbsoluteExpirationRelativeToNowInMilliseconds { get; set; }
+		public long SlidingExpirationInMilliseconds { get; set; }
 	}
 }

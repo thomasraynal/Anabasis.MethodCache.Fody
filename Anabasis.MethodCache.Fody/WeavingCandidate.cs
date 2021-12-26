@@ -7,11 +7,14 @@ namespace Anabasis.MethodCache.Fody
 {
 	public class WeavingCandidate
 	{
-		public WeavingCandidate(TypeDefinition classDefinition, MethodDefinition methodDefinition)
+		public WeavingCandidate(TypeDefinition classDefinition, MethodDefinition methodDefinition, References references)
 		{
 			ClassDefinition = classDefinition;
 			MethodDefinition = methodDefinition;
+			CacheAttribute = methodDefinition.GetCacheAttribute(references);
 		}
+
+		public CustomAttribute CacheAttribute { get; }
 
 		public TypeDefinition ClassDefinition { get; }
 

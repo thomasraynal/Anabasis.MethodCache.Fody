@@ -51,7 +51,7 @@ namespace Anabasis.MethodCache.Test
             throw new NotImplementedException();
         }
 
-        public void SetValue<TItem>(string key, TItem value)
+        public void SetValue<TItem>(string key, TItem value, long absoluteExpirationRelativeToNowInMilliseconds, long slidingExpirationInMilliseconds)
         {
             object storedValue = value;
 
@@ -65,7 +65,11 @@ namespace Anabasis.MethodCache.Test
                 storedValue = typedAdapter.GetStoredValue(value);
             }
 
-            Cache.Set(key, storedValue);
+            Cache.Set(key, storedValue, new MemoryCacheEntryOptions()
+            {
+                AbsoluteExpirationRelativeToNow = default == absoluteExpirationRelativeToNowInMilliseconds ? null : TimeSpan.FromSeconds(absoluteExpirationRelativeToNowInMilliseconds),
+                SlidingExpiration = default == slidingExpirationInMilliseconds ? null : TimeSpan.FromSeconds(slidingExpirationInMilliseconds)
+            });
 
         }
 
@@ -93,5 +97,6 @@ namespace Anabasis.MethodCache.Test
 
             return Cache.TryGetValue(key, out value);
         }
+
     }
 }

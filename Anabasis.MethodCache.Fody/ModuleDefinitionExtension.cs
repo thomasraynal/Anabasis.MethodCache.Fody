@@ -16,7 +16,7 @@ namespace Anabasis.MethodCache.Fody
 			foreach (var typeDefinition in moduleDefinition.Types)
 			{
 				var typeCandidates = typeDefinition.Methods.Where(methodDefinition => methodDefinition.HasCacheAttribute(references) && methodDefinition.IsEligibleForWeaving(references))
-														   .Select(methodDefinition => new WeavingCandidate(typeDefinition, methodDefinition))
+														   .Select(methodDefinition => new WeavingCandidate(typeDefinition, methodDefinition, references))
 														   .ToArray();
 
 				weavingCandidates.AddRange(typeCandidates);

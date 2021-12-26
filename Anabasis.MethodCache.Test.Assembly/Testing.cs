@@ -10,13 +10,9 @@ namespace Anabasis.MethodCache.Test
     public class Testing<TItem>
     {
         [Cache]
-        public IEnumerable<string> TestGenerics(TItem a, TItem b)
+        public void TestGenerics(TItem a, TItem b)
         {
-
-            yield return "a";
-            yield return "B";
-
-            //CachingServices.Backend.SetValue("sdf", result);
+            CachingServices.Backend.SetValue("sdf", "a", 1L, 2L);
 
         }
     }

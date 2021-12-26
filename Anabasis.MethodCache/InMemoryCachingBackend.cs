@@ -44,9 +44,8 @@ namespace Anabasis.MethodCache
             throw new System.NotImplementedException();
         }
 
-        public void SetValue<TItem>(string key, TItem value)
+        public void SetValue<TItem>(string key, TItem value, long absoluteExpirationRelativeToNowInMilliseconds, long slidingExpirationInMilliseconds)
         {
-
         }
 
         public void SetValueAdapter<TAdapter>(TAdapter value) where TAdapter : IValueAdapter

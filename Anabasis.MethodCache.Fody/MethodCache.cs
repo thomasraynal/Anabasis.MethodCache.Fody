@@ -1,9 +1,7 @@
 ﻿using Mono.Cecil;
 using Mono.Cecil.Cil;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Anabasis.MethodCache.Fody
@@ -12,13 +10,15 @@ namespace Anabasis.MethodCache.Fody
     {
 
         public static void WeaveMethod(ModuleDefinition moduleDefinition,
-            MethodDefinition method,
+            WeavingCandidate weavingCandidate,
             References references)
         {
-           
-            var processor = method.Body.GetILProcessor();
 
-            var current = method.Body.Instructions.First();
+            var methodDefinition = weavingCandidate.MethodDefinition;
+
+            var processor = methodDefinition.Body.GetILProcessor();
+
+            var current = methodDefinition.Body.Instructions.First();
             var firstNonWeaved = current;
 
             var first = Instruction.Create(OpCodes.Nop);
@@ -29,22 +29,22 @@ namespace Anabasis.MethodCache.Fody
 
             var cacheKeyVariable = new VariableDefinition(moduleDefinition.TypeSystem.String);
 
-            if (!method.ReturnType.IsEnumerableT())
+            if (!methodDefinition.ReturnType.IsEnumerableT())
             {
-                resultVariable = method.Body.Variables[method.Body.Variables.Count - 1];
+                resultVariable = methodDefinition.Body.Variables[methodDefinition.Body.Variables.Count - 1];
             }
 
-            foreach (var instruction in WeaveTryGetCacheValue(moduleDefinition, method, references, firstNonWeaved, cacheKeyVariable))
+            foreach (var instruction in WeaveTryGetCacheValue(moduleDefinition, methodDefinition, references, firstNonWeaved, cacheKeyVariable))
             {
                 processor.InsertAfter(current, instruction);
                 current = instruction;
             }
 
-            var allReturnInstructions = method.Body.Instructions.Where(instruction => instruction.OpCode == OpCodes.Ret).ToArray();
+            var allReturnInstructions = methodDefinition.Body.Instructions.Where(instruction => instruction.OpCode == OpCodes.Ret).ToArray();
           
             foreach (var returnInstruction in allReturnInstructions.Skip(1))
             {
-                foreach (var instruction in WeaveSetCacheValue(references, method, resultVariable, cacheKeyVariable))
+                foreach (var instruction in WeaveSetCacheValue(references, weavingCandidate, resultVariable, cacheKeyVariable))
                 {
                     processor.InsertBefore(returnInstruction, instruction);
                 }
@@ -89,10 +89,25 @@ namespace Anabasis.MethodCache.Fody
 
         private static IEnumerable<Instruction> WeaveSetCacheValue(
             References references,
-            MethodDefinition methodDefinition,
+            WeavingCandidate weavingCandidate,
             VariableDefinition resultVariable,
             VariableDefinition cacheKeyVariable)
         {
+            var methodDefinition = weavingCandidate.MethodDefinition;
+
+            var absoluteExpirationRelativeToNowInMillisecondsArgument = weavingCandidate.CacheAttribute.Properties.FirstOrDefault(customAttributeNamedArgument=> 
+            customAttributeNamedArgument.Name == "AbsoluteExpirationRelativeToNowInMilliseconds");
+
+            var absoluteExpirationRelativeToNowInMilliseconds = absoluteExpirationRelativeToNowInMillisecondsArgument.IsNull() ? 0L 
+                : (long)absoluteExpirationRelativeToNowInMillisecondsArgument.Argument.Value;
+
+            var slidingExpirationInMillisecondsArgument = weavingCandidate.CacheAttribute.Properties.FirstOrDefault(customAttributeNamedArgument =>
+            customAttributeNamedArgument.Name == "SlidingExpirationInMilliseconds");
+
+            var slidingExpirationInMilliseconds = slidingExpirationInMillisecondsArgument.IsNull() ? 0L
+                : (long)slidingExpirationInMillisecondsArgument.Argument.Value;
+
+
             if (methodDefinition.ReturnType.IsTaskT() || methodDefinition.ReturnType.IsValueTaskT())
             {
                 var taskVariable = new VariableDefinition(methodDefinition.ReturnType);
@@ -102,6 +117,8 @@ namespace Anabasis.MethodCache.Fody
                 yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
                 yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
                 yield return Instruction.Create(OpCodes.Ldloc, taskVariable);
+                yield return Instruction.Create(OpCodes.Ldc_I8, absoluteExpirationRelativeToNowInMilliseconds);
+                yield return Instruction.Create(OpCodes.Ldc_I8, slidingExpirationInMilliseconds);
                 yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(methodDefinition.ReturnType));
                 yield return Instruction.Create(OpCodes.Ldloc, taskVariable);
 
@@ -115,6 +132,8 @@ namespace Anabasis.MethodCache.Fody
                 yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
                 yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
                 yield return Instruction.Create(OpCodes.Ldloc, enumerableVariable);
+                yield return Instruction.Create(OpCodes.Ldc_I8, absoluteExpirationRelativeToNowInMilliseconds);
+                yield return Instruction.Create(OpCodes.Ldc_I8, slidingExpirationInMilliseconds);
                 yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(methodDefinition.ReturnType));
                 yield return Instruction.Create(OpCodes.Ldloc, enumerableVariable);
             }
@@ -123,6 +142,8 @@ namespace Anabasis.MethodCache.Fody
                 yield return Instruction.Create(OpCodes.Call, references.GetBackendTypeReference);
                 yield return Instruction.Create(OpCodes.Ldloc, cacheKeyVariable);
                 yield return Instruction.Create(OpCodes.Ldloc, resultVariable);
+                yield return Instruction.Create(OpCodes.Ldc_I8, absoluteExpirationRelativeToNowInMilliseconds);
+                yield return Instruction.Create(OpCodes.Ldc_I8, slidingExpirationInMilliseconds);
                 yield return Instruction.Create(OpCodes.Callvirt, references.GetSetValue(methodDefinition.ReturnType));
             }
 

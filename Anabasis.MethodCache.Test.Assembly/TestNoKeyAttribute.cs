@@ -12,16 +12,12 @@ namespace Anabasis.MethodCache
         [Cache]
         public string TestNoSecondParameter<TItem>(TItem a, [NoKey] TItem b)
         {
-            Debug.WriteLine(nameof(TestNoKeyAttribute));
-
             return $"{a}{b}";
         }
 
         [Cache]
         public string TestNoFirstParameter<TItem>([NoKey] TItem a, TItem b)
         {
-            Debug.WriteLine(nameof(TestNoKeyAttribute));
-
             return $"{a}{b}";
         }
     }

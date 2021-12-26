@@ -14,7 +14,7 @@ namespace Anabasis.MethodCache.Fody
     
             foreach(var weavingCandidate in weavingCandidates)
             {
-                MethodCache.WeaveMethod(ModuleDefinition, weavingCandidate.MethodDefinition, references);
+                MethodCache.WeaveMethod(ModuleDefinition, weavingCandidate, references);
             }
 
         }
