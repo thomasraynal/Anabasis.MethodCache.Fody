@@ -67,8 +67,8 @@ namespace Anabasis.MethodCache.Test
 
             Cache.Set(key, storedValue, new MemoryCacheEntryOptions()
             {
-                AbsoluteExpirationRelativeToNow = default == absoluteExpirationRelativeToNowInMilliseconds ? null : TimeSpan.FromSeconds(absoluteExpirationRelativeToNowInMilliseconds),
-                SlidingExpiration = default == slidingExpirationInMilliseconds ? null : TimeSpan.FromSeconds(slidingExpirationInMilliseconds)
+                AbsoluteExpirationRelativeToNow = default == absoluteExpirationRelativeToNowInMilliseconds ? null : TimeSpan.FromMilliseconds(absoluteExpirationRelativeToNowInMilliseconds),
+                SlidingExpiration = default == slidingExpirationInMilliseconds ? null : TimeSpan.FromMilliseconds(slidingExpirationInMilliseconds)
             });
 
         }

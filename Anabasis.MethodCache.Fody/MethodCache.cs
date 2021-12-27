@@ -170,7 +170,6 @@ namespace Anabasis.MethodCache.Fody
             //method name
             yield return Instruction.Create(OpCodes.Ldstr, methodName);
 
-
             var arguments = methodDefinition.Parameters.Where(parameter => !parameter.CustomAttributes.Any(customAttribute => customAttribute.AttributeType.CompareTo(references.NoKeyAttributeTypeReference))).ToArray();
 
             //arguments names
