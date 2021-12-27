@@ -10,6 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Anabasis.MethodCache.Test.Common\Anabasis.MethodCache.Test.Common.csproj" />
     <ProjectReference Include="..\Anabasis.MethodCache\Anabasis.MethodCache.csproj" />
   </ItemGroup>
 

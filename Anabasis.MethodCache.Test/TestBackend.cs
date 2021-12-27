@@ -59,7 +59,6 @@ namespace Anabasis.MethodCache.Test
 
             if (null != valueAdapter)
             {
-
                 var typedAdapter = (IValueAdapter<TItem>)valueAdapter;
 
                 storedValue = typedAdapter.GetStoredValue(value);
