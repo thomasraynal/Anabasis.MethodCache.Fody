@@ -7,9 +7,35 @@ namespace Anabasis.MethodCache
 {
 	public class DefaultCacheKeyBuilder : ICacheKeyBuilder
 	{
+
+		private const string NullStringValue = "null";
+
 		private string GetParameterCacheKey(string parameterName, object parameterValue)
 		{
-			return $"{parameterName}|{parameterValue ?? "null"}";
+			if (null == parameterValue)
+			{
+				return $"{parameterName}|{NullStringValue}";
+			}
+
+			string parameterValueAsString;
+
+			if (parameterValue is IFormattable)
+			{
+
+				var stringBuilder = new StringBuilder();
+
+				(parameterValue as IFormattable).Format(stringBuilder);
+
+				parameterValueAsString = stringBuilder.ToString();
+
+			}
+			else
+			{
+				parameterValueAsString = parameterValue.ToString();
+			}
+
+			return $"{parameterName}|{ parameterValueAsString}";
+
 		}
 
 		public string CreateKey(string methodName, string[] argumentNames = null, object[] argumentValues = null)
@@ -35,5 +61,5 @@ namespace Anabasis.MethodCache
 			return key.TrimEnd(';');
 
 		}
-    }
+	}
 }
