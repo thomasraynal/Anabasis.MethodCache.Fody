@@ -72,6 +72,11 @@ namespace Anabasis.MethodCache.AspNet.Tests
                 throw new NotImplementedException();
             }
 
+            public Task InvalidateWhenStartWith(string predicate, bool isCaseSensitive = true)
+            {
+                throw new NotImplementedException();
+            }
+
             public void SetValue<TItem>(string key, TItem value, long absoluteExpirationRelativeToNowInMilliseconds, long slidingExpirationInMilliseconds)
             {
                 throw new NotImplementedException();

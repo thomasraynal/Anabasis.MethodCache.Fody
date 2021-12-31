@@ -51,7 +51,7 @@ namespace Anabasis.MethodCache.Test
             throw new NotImplementedException();
         }
 
-        public void SetValue<TItem>(string key, TItem value, long absoluteExpirationRelativeToNowInMilliseconds, long slidingExpirationInMilliseconds)
+        public void SetValue<TItem>(string key, TItem value, long absoluteExpirationRelativeToNowInMilliseconds=0, long slidingExpirationInMilliseconds = 0)
         {
             object storedValue = value;
 
@@ -97,5 +97,9 @@ namespace Anabasis.MethodCache.Test
             return Cache.TryGetValue(key, out value);
         }
 
+        public Task InvalidateWhenStartWith(string predicate, bool isCaseSensitive = true)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

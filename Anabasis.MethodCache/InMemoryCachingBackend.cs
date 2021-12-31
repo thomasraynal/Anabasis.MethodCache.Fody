@@ -26,6 +26,39 @@ namespace Anabasis.MethodCache
             GetKeys(memoryCache).OfType<T>();
     }
 
+    internal class DummyLogger : ILogger
+    {
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            throw new NotImplementedException();
+        }
+
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            return false;
+        }
+
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        {
+        }
+    }
+
+    internal class DummyLoggerFactory : ILoggerFactory
+    {
+        public void AddProvider(ILoggerProvider provider)
+        {
+        }
+
+        public ILogger CreateLogger(string categoryName)
+        {
+            return new DummyLogger();
+        }
+
+        public void Dispose()
+        {
+        }
+    }
+
 
     public class InMemoryCachingBackend : ICachingBackend
     {
@@ -47,7 +80,7 @@ namespace Anabasis.MethodCache
 
         public InMemoryCachingBackend(MemoryCacheOptions memoryCacheOptions = null, ILoggerFactory loggerFactory = null)
         {
-            _loggerFactory = loggerFactory;
+            _loggerFactory = loggerFactory?? new DummyLoggerFactory();
             _memoryCacheOptions = memoryCacheOptions ?? new MemoryCacheOptions();
 
             Cache = new MemoryCache(_memoryCacheOptions, _loggerFactory);
@@ -107,13 +140,44 @@ namespace Anabasis.MethodCache
             return Task.WhenAll(predicates.Select(predicate => InvalidateWhenContains(predicate, isCaseSensitive)).ToArray());
 
         }
-
         public Task InvalidateWhenStartWith(string[] predicates, bool isCaseSensitive = true)
         {
-            throw new NotImplementedException();
+            return Task.WhenAll(predicates.Select(predicate => InvalidateWhenContains(predicate, isCaseSensitive)).ToArray());
         }
 
-        public void SetValue<TItem>(string key, TItem value, long absoluteExpirationRelativeToNowInMilliseconds, long slidingExpirationInMilliseconds)
+        public Task InvalidateWhenStartWith(string predicate, bool isCaseSensitive = true)
+        {
+            var entriesToRemove = new List<string>();
+
+            foreach (string entry in Cache.GetKeys())
+            {
+
+                if (isCaseSensitive)
+                {
+                    if (entry.StartsWith(predicate))
+                    {
+                        entriesToRemove.Add(entry);
+                    }
+                }
+                else
+                {
+                    if (entry.ToLowerInvariant().StartsWith(predicate.ToLowerInvariant()))
+                    {
+                        entriesToRemove.Add(entry);
+                    }
+                }
+
+            }
+
+            foreach (var entryToRemove in entriesToRemove)
+            {
+                Cache.Remove(entryToRemove);
+            }
+
+            return Task.CompletedTask;
+        }
+
+        public void SetValue<TItem>(string key, TItem value, long absoluteExpirationRelativeToNowInMilliseconds = 0, long slidingExpirationInMilliseconds = 0)
         {
             object storedValue = value;
 
