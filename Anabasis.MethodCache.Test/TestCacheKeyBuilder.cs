@@ -20,12 +20,12 @@ namespace Anabasis.MethodCache.Test
 
             string parameterValueAsString;
 
-            if (parameterValue is IFormattable)
+            if (parameterValue is IMemoryCacheFormattable)
 			{
 
 				var stringBuilder = new StringBuilder();
 
-				(parameterValue as IFormattable).Format(stringBuilder);
+				(parameterValue as IMemoryCacheFormattable).Format(stringBuilder);
 
 				parameterValueAsString = stringBuilder.ToString();
 

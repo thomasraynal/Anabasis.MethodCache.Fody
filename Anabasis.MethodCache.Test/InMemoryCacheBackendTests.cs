@@ -1,13 +1,9 @@
 ﻿using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Anabasis.MethodCache.Test
 {
-	public class InMemoryCacheBackendTests
+    public class InMemoryCacheBackendTests
 	{
 		[SetUp]
 		public void Setup()

@@ -20,9 +20,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache.Test.Common", "Anabasis.MethodCache.Test.Common\Anabasis.MethodCache.Test.Common.csproj", "{4FC27E60-0A67-454A-ACE2-ABBBF213DB67}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anabasis.MethodCache.AspNet", "Anabasis.MethodCache.AspNet\Anabasis.MethodCache.AspNet.csproj", "{29AF6739-BA37-493C-999E-5457B1BBF0D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache.AspNet", "Anabasis.MethodCache.AspNet\Anabasis.MethodCache.AspNet.csproj", "{29AF6739-BA37-493C-999E-5457B1BBF0D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anabasis.MethodCache.AspNet.Tests", "Anabasis.MethodCache.AspNet.Tests\Anabasis.MethodCache.AspNet.Tests.csproj", "{9131191B-AEA0-42D4-AAE2-C5AEC67F4A2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache.AspNet.Tests", "Anabasis.MethodCache.AspNet.Tests\Anabasis.MethodCache.AspNet.Tests.csproj", "{9131191B-AEA0-42D4-AAE2-C5AEC67F4A2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anabasis.MethodCache.Samples", "Anabasis.MethodCache.Samples\Anabasis.MethodCache.Samples.csproj", "{BD127D4D-490B-4BB7-86B0-0A07AFA10F1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -62,6 +64,10 @@ Global
 		{9131191B-AEA0-42D4-AAE2-C5AEC67F4A2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9131191B-AEA0-42D4-AAE2-C5AEC67F4A2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9131191B-AEA0-42D4-AAE2-C5AEC67F4A2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BD127D4D-490B-4BB7-86B0-0A07AFA10F1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BD127D4D-490B-4BB7-86B0-0A07AFA10F1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BD127D4D-490B-4BB7-86B0-0A07AFA10F1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BD127D4D-490B-4BB7-86B0-0A07AFA10F1E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

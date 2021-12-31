@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 namespace Anabasis.MethodCache
 {
 
-    public interface IFormattable
+    public interface IMemoryCacheFormattable
+
     {
         void Format(StringBuilder stringBuilder);
     }

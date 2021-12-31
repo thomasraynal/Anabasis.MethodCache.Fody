@@ -3,7 +3,7 @@ using System.Text;
 
 namespace Anabasis.MethodCache.Test.Common
 {
-    public class Item : IFormattable
+    public class Item : IMemoryCacheFormattable
     {
         private readonly int _value;
 
