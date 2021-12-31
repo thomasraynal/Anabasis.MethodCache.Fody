@@ -1,5 +1,4 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -10,7 +9,7 @@ namespace Anabasis.MethodCache.Samples.Model
 {
     public class Ressource
     {
-        [JsonConstructor]
+ 
         internal Ressource()
         {
         }
@@ -33,14 +32,13 @@ namespace Anabasis.MethodCache.Samples.Model
         }
 
         [Required]
-        [JsonProperty(Required = Required.DisallowNull)]
         public RessourceItem[] RessourceObjects { get; set; }
 
     }
 
     public class RessourceItem
     {
-        [JsonConstructor]
+
         internal RessourceItem()
         {
         }
@@ -55,13 +53,11 @@ namespace Anabasis.MethodCache.Samples.Model
         public string Name => Properties.FirstOrDefault(property => property.Key == "name")?.Value as string;
 
         [Required]
-        [JsonProperty(Required = Required.DisallowNull)]
         public RessourceProperty[] Properties { get; set; }
     }
 
     public class RessourceProperty
     {
-        [JsonConstructor]
         internal RessourceProperty()
         {
         }
@@ -73,7 +69,6 @@ namespace Anabasis.MethodCache.Samples.Model
         }
 
         [Required]
-        [JsonProperty(Required = Required.DisallowNull)]
         public string Key { get; set; }
 
         [Required]

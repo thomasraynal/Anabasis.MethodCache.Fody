@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
+﻿using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Anabasis.MethodCache.Test
 {
     public class TestClassValueTask
     {
+
 
         [Cache]
         public async ValueTask TestNoReturnValue(int a, int b)

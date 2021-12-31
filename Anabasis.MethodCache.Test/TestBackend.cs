@@ -101,5 +101,15 @@ namespace Anabasis.MethodCache.Test
         {
             throw new NotImplementedException();
         }
+
+        public Task<TItem> GetValue<TItem>(string key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Task<string[]> GetKeys()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

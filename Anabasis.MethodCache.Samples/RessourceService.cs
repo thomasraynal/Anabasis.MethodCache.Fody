@@ -5,8 +5,8 @@ namespace Anabasis.MethodCache.Samples.Model
 {
     public class RessourceService : IRessourceService
     {
-        [Cache(AbsoluteExpirationRelativeToNowInMilliseconds = 60*60*1000)]
-        public Task<AvailableRessourcesDescriptor> GetAvailableRessourceIdsForRessourceType(string ressourceType)
+        [Cache(AbsoluteExpirationRelativeToNowInMilliseconds = CacheAttribute.Day * 1)]
+        public Task<AvailableRessourcesDescriptor> GetAvailableRessourceForRessourceType(string ressourceType)
         {
             var availableRessourcesDescriptor =
 
@@ -30,7 +30,7 @@ namespace Anabasis.MethodCache.Samples.Model
             return Task.FromResult(ressourceTypes);
         }
 
-        [Cache(SlidingExpirationInMilliseconds = 60 * 1000)]
+        [Cache(SlidingExpirationInMilliseconds = CacheAttribute.Minute * 1)]
         public Task<Ressource> GetDateUnboundRessource(GetDateUnboundRessourceRequest getDateUnboundRessourceRequest)
         {
             var ressource = new Ressource("CANDRIAM LOW YIELD", "BenchmarkData", null, Array.Empty<RessourceItem>());
@@ -38,7 +38,7 @@ namespace Anabasis.MethodCache.Samples.Model
             return Task.FromResult(ressource);
         }
 
-        [Cache(SlidingExpirationInMilliseconds = 60 * 1000)]
+        [Cache(SlidingExpirationInMilliseconds = CacheAttribute.Day * 1)]
         public Task<Ressource> GetRessource(GetRessourceRequest getRessourceRequest)
         {
             var ressource = new Ressource("CANDRIAM BONDS EURO CORPORATE", "FundData", DateTime.UtcNow, Array.Empty<RessourceItem>());
@@ -46,7 +46,7 @@ namespace Anabasis.MethodCache.Samples.Model
             return Task.FromResult(ressource);
         }
 
-        [Cache]
+        [Cache(SlidingExpirationInMilliseconds = CacheAttribute.Hour * 1)]
         public Task<Ressource> GetRessourceRequestWithPredicate(GetRessourceRequestWithPredicateRequest getRessourceRequestWithPredicate)
         {
             var ressource = new Ressource("CANDRIAM EURO EQUITIES", "FundData", DateTime.UtcNow, Array.Empty<RessourceItem>());

@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
-    <RootNamespace>Anabasis.MethodCache.TestAssembly</RootNamespace>
+    <RootNamespace>Anabasis.MethodCache</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

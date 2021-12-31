@@ -52,6 +52,16 @@ namespace Anabasis.MethodCache.AspNet.Tests
                 throw new NotImplementedException();
             }
 
+            public Task<string[]> GetKeys()
+            {
+                throw new NotImplementedException();
+            }
+
+            public Task<TItem> GetValue<TItem>(string key)
+            {
+                throw new NotImplementedException();
+            }
+
             public Task Invalidate(string key)
             {
                 throw new NotImplementedException();

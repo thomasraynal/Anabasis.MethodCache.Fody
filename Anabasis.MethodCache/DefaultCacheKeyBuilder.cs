@@ -47,6 +47,9 @@ namespace Anabasis.MethodCache
 
 			key += "|";
 
+			if (null == argumentNames || argumentNames.Length == 0)
+				return key.TrimEnd('|');
+
 			var valueIndex = 0;
 
 			foreach (var argumentName in argumentNames)

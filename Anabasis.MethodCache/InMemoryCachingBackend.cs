@@ -223,6 +223,20 @@ namespace Anabasis.MethodCache
             return Cache.TryGetValue(key, out value);
         }
 
+        public Task<TItem> GetValue<TItem>(string key)
+        {
+            if (!TryGetValue<TItem>(key, out var result))
+            {
+                return default;
+            }
+
+            return Task.FromResult(result);
+        }
+
+        public Task<string[]> GetKeys()
+        {
+            return Task.FromResult(Cache.GetKeys<string>().ToArray());
+        }
     }
 }
 

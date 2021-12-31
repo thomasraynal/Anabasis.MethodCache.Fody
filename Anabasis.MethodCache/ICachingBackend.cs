@@ -9,6 +9,8 @@ namespace Anabasis.MethodCache
 		void SetValueAdapter<TAdapter>(TAdapter value) where TAdapter : IValueAdapter;
 		Task Clear(CancellationToken cancellationToken = default);
 		bool TryGetValue<TItem>(string key, out TItem value);
+		Task<TItem> GetValue<TItem>(string key);
+		Task<string[]> GetKeys();
 		void SetValue<TItem>(string key, TItem value, 
 			long absoluteExpirationRelativeToNowInMilliseconds = 0, 
 			long slidingExpirationInMilliseconds = 0);

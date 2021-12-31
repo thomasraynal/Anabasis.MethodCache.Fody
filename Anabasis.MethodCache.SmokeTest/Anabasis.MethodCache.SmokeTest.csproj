@@ -3,11 +3,30 @@
     <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
+
   <ItemGroup>
-    <ProjectReference Include="..\Anabasis.MethodCache.Fody\Anabasis.MethodCache.Fody.csproj" />
+    <WeaverFiles Include="$(SolutionDir)$(SolutionName)\bin\$(Configuration)\netstandard2.0\$(SolutionName).dll" />
   </ItemGroup>
   <ItemGroup>
-    <WeaverFiles Include="$(SolutionDir)src\Anabasis.MethodCache.Fody\bin\$(Configuration)\netstandard2.0\Anabasis.MethodCache.Fody.dll" />
+    <None Update="FodyWeavers.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="FodyWeavers.xsd">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Anabasis.MethodCache\Anabasis.MethodCache.csproj" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <PackageReference Include="Fody" Version="6.6.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 
