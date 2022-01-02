@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Anabasis.MethodCache.Samples.Model
@@ -6,7 +8,7 @@ namespace Anabasis.MethodCache.Samples.Model
     public class RessourceService : IRessourceService
     {
         [Cache(AbsoluteExpirationRelativeToNowInMilliseconds = CacheAttribute.Day * 1)]
-        public Task<AvailableRessourcesDescriptor> GetAvailableRessourceForRessourceType(string ressourceType)
+        public Task<AvailableRessourcesDescriptor> GetAvailableRessourcesForRessourceType(string ressourceType)
         {
             var availableRessourcesDescriptor =
 
@@ -28,6 +30,14 @@ namespace Anabasis.MethodCache.Samples.Model
             var ressourceTypes = new[] { "FundData", "BenchmarkData" };
 
             return Task.FromResult(ressourceTypes);
+        }
+
+        [Cache]
+        public IEnumerable<string> GetAvailableRessourceTypesSynchronous()
+        {
+            var ressourceTypes = new[] { "FundData", "BenchmarkData" };
+
+            return ressourceTypes.AsEnumerable();
         }
 
         [Cache(SlidingExpirationInMilliseconds = CacheAttribute.Minute * 1)]
@@ -54,7 +64,7 @@ namespace Anabasis.MethodCache.Samples.Model
             return Task.FromResult(ressource);
         }
 
-        public Task<RessourceItem> PutRessourceItem(PutRessourceRequest putRessourceRequest)
+        public Task<RessourceItem> PutRessourceItem(PutRessourceRequest putRessourceRequest, [NoKey] Guid? extraParameter = null)
         {
             var ressourceItem = new RessourceItem(new[]
             {
@@ -64,5 +74,7 @@ namespace Anabasis.MethodCache.Samples.Model
 
             return Task.FromResult(ressourceItem);
         }
+
+
     }
 }

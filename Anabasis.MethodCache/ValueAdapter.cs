@@ -9,7 +9,10 @@ namespace Anabasis.MethodCache
     public abstract class ValueAdapter<TValue> : IValueAdapter<TValue>
     {
 
-        public Type ValueAdapterType => typeof(TValue);
+        public virtual bool CanHandle(Type type)
+        {
+            return typeof(TValue) == type;
+        }
 
         public abstract TValue GetExposedValue(object storedValue);
 

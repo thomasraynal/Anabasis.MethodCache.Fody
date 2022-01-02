@@ -11,9 +11,10 @@ namespace Anabasis.MethodCache.Samples.Model
 
         Task<Ressource> GetRessource(GetRessourceRequest getRessourceRequest);
         Task<Ressource> GetDateUnboundRessource(GetDateUnboundRessourceRequest getDateUnboundRessourceRequest);
-        Task<AvailableRessourcesDescriptor> GetAvailableRessourceForRessourceType(string ressourceType);
+        Task<AvailableRessourcesDescriptor> GetAvailableRessourcesForRessourceType(string ressourceType);
         Task<string[]> GetAvailableRessourceTypes();
-        Task<RessourceItem> PutRessourceItem(PutRessourceRequest putRessourceRequest);
+        Task<RessourceItem> PutRessourceItem(PutRessourceRequest putRessourceRequest, Guid? extraParameter);
         Task<Ressource> GetRessourceRequestWithPredicate(GetRessourceRequestWithPredicateRequest getRessourceRequestWithPredicate);
+        IEnumerable<string> GetAvailableRessourceTypesSynchronous();
     }
 }

@@ -14,11 +14,13 @@ namespace Anabasis.MethodCache.Samples
         static async Task Main(string[] _)
         {
 
+            CachingServices.Backend.SetValueAdapter(new EnumerableValueAdapter<string>());
+
             var ressourceService = new RessourceService();
 
-            Console.WriteLine($"Call=> {nameof(ressourceService.GetAvailableRessourceForRessourceType)}");
+            Console.WriteLine($"Call=> {nameof(ressourceService.GetAvailableRessourcesForRessourceType)}");
 
-            var availableDescriptors = await ressourceService.GetAvailableRessourceForRessourceType("someRessource");
+            var availableDescriptors = await ressourceService.GetAvailableRessourcesForRessourceType("someRessource");
 
             var keys = await CachingServices.Backend.GetKeys();
 

@@ -63,7 +63,7 @@ namespace Anabasis.MethodCache
     public class InMemoryCachingBackend : ICachingBackend
     {
 
-        private readonly List<IValueAdapter> _valueAdapters = new List<IValueAdapter>()
+        private readonly List<IValueAdapter> _valueAdapters = new()
         {
             new StreamValueAdapter()
         };
@@ -181,7 +181,7 @@ namespace Anabasis.MethodCache
         {
             object storedValue = value;
 
-            var valueAdapter = _valueAdapters.FirstOrDefault(valueAdapter => valueAdapter.ValueAdapterType == typeof(TItem));
+            var valueAdapter = _valueAdapters.FirstOrDefault(valueAdapter => valueAdapter.CanHandle(typeof(TItem)));
 
             if (null != valueAdapter)
             {
@@ -201,7 +201,7 @@ namespace Anabasis.MethodCache
         public bool TryGetValue<TItem>(string key, out TItem value)
         {
 
-            var valueAdapter = _valueAdapters.FirstOrDefault(valueAdapter => valueAdapter.ValueAdapterType == typeof(TItem));
+            var valueAdapter = _valueAdapters.FirstOrDefault(valueAdapter => valueAdapter.CanHandle(typeof(TItem)));
 
             if (null != valueAdapter)
             {

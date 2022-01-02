@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,11 @@ namespace Anabasis.MethodCache
 {
     public class EnumerableValueAdapter<TItem> : ValueAdapter<IEnumerable<TItem>>
     {
+        public override bool CanHandle(Type type)
+        {
+            return type is IEnumerable<TItem>;
+        }
+
         public override IEnumerable<TItem> GetExposedValue(object storedValue)
         {
             return (IEnumerable<TItem>)storedValue;

@@ -7,12 +7,23 @@ using System.Threading.Tasks;
 
 namespace Anabasis.MethodCache.Test
 {
-    public class Testing<TItem>
+    public class Sample
     {
         [Cache]
-        public void TestGenerics(TItem a, TItem b)
+        public string SampleTest(int a, string b)
         {
-            CachingServices.Backend.SetValue("sdf", "a", 1L, 2L);
+            var cacheKey = CachingServices.KeyBuilder.CreateKey(nameof(SampleTest), new[] { "a", "b" }, new object[] { a, b });
+
+            if (CachingServices.Backend.TryGetValue<string>(cacheKey, out var cachedValue))
+            {
+                return cachedValue;
+            }
+
+            var result = a + b;
+
+            CachingServices.Backend.SetValue(cacheKey, result);
+
+            return result;
 
         }
     }

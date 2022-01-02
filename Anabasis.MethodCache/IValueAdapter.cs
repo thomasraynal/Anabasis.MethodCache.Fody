@@ -4,7 +4,7 @@ namespace Anabasis.MethodCache
 {
     public interface IValueAdapter
     {
-        Type ValueAdapterType { get; }
+        bool CanHandle(Type type);
     }
 
     public interface IValueAdapter<TValue> : IValueAdapter

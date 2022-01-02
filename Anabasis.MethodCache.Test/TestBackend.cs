@@ -55,7 +55,7 @@ namespace Anabasis.MethodCache.Test
         {
             object storedValue = value;
 
-            var valueAdapter = _valueAdapters.FirstOrDefault(valueAdapter => valueAdapter.ValueAdapterType == typeof(TItem));
+            var valueAdapter = _valueAdapters.FirstOrDefault(valueAdapter => valueAdapter.CanHandle(typeof(TItem)));
 
             if (null != valueAdapter)
             {
@@ -75,7 +75,7 @@ namespace Anabasis.MethodCache.Test
         public bool TryGetValue<TItem>(string key, out TItem value)
         {
 
-            var valueAdapter = _valueAdapters.FirstOrDefault(valueAdapter => valueAdapter.ValueAdapterType == typeof(TItem));
+            var valueAdapter = _valueAdapters.FirstOrDefault(valueAdapter => valueAdapter.CanHandle(typeof(TItem)));
 
             if (null != valueAdapter)
             {
