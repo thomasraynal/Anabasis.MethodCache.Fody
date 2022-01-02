@@ -15,6 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache.SmokeT
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{3BD1D21E-7E50-48D5-B0DA-7BC5E8F0DCAD}"
 	ProjectSection(SolutionItems) = preProject
+		.github\workflows\dotnet.yml = .github\workflows\dotnet.yml
 		README.md = README.md
 	EndProjectSection
 EndProject
@@ -24,7 +25,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache.AspNet
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache.AspNet.Tests", "Anabasis.MethodCache.AspNet.Tests\Anabasis.MethodCache.AspNet.Tests.csproj", "{9131191B-AEA0-42D4-AAE2-C5AEC67F4A2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Anabasis.MethodCache.Samples", "Anabasis.MethodCache.Samples\Anabasis.MethodCache.Samples.csproj", "{BD127D4D-490B-4BB7-86B0-0A07AFA10F1E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache.Samples", "Anabasis.MethodCache.Samples\Anabasis.MethodCache.Samples.csproj", "{BD127D4D-490B-4BB7-86B0-0A07AFA10F1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

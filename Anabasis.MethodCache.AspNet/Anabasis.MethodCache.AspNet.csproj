@@ -2,6 +2,15 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
+    <LangVersion>Latest</LangVersion>
+    <Platforms>AnyCPU;x64</Platforms>
+    <PackageProjectUrl>https://github.com/thomasraynal/Anabasis.MethodCache.Fody</PackageProjectUrl>
+    <Description>Method cache weaving with a PostSharp like API</Description>
+    <PackageTags>Fody;MethodCache</PackageTags>
+    <Authors>Thomas Raynal</Authors>
+    <Company />
+    <Product />
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>

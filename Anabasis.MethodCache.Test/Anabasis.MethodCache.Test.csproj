@@ -8,6 +8,7 @@
     <ProjectReference Include="..\Anabasis.MethodCache.Fody\Anabasis.MethodCache.Fody.csproj" />
     <ProjectReference Include="..\Anabasis.MethodCache.Test.Assembly\Anabasis.MethodCache.Test.Assembly.csproj" />
     <ProjectReference Include="..\Anabasis.MethodCache.Test.Common\Anabasis.MethodCache.Test.Common.csproj" />
+    <ProjectReference Include="..\Anabasis.MethodCache\Anabasis.MethodCache.csproj" />
   </ItemGroup>
 
   <ItemGroup>

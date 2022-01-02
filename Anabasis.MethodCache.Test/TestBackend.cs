@@ -12,7 +12,7 @@ namespace Anabasis.MethodCache.Test
     public class TestBackend : ICachingBackend
     {
 
-        private readonly List<IValueAdapter> _valueAdapters = new List<IValueAdapter>()
+        private readonly List<IValueAdapter> _valueAdapters = new()
         {
             new StreamValueAdapter()
         };
