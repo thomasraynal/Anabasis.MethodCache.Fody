@@ -20,16 +20,16 @@ jobs:
       with:
         dotnet-version: 5.0.x
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore Anabasis.MethodCache.Fody.sln
     - name: Build
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build Anabasis.MethodCache.Fody.sln --no-restore --configuration Release
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test Anabasis.MethodCache.Fody.sln --verbosity normal
     - name: publish
       id: publish_nuget
       uses: drusellers/publish-nuget@v3
       with:
        project-file-path: Anabasis.MethodCache/Anabasis.MethodCache.csproj
-       version: ${{ github.run_number }}
+       version: 1.0.${{ github.run_number }}
        package-name: Anabasis.MethodCache.Fody
        nuget-key: ${{secrets.NUGET_KEY}} 
