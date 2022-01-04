@@ -8,14 +8,15 @@
     <Description>Method cache weaving with a PostSharp like API</Description>
     <PackageTags>Fody;MethodCache</PackageTags>
     <Authors>Thomas Raynal</Authors>
+    <PackageOutputPath>$(SolutionDir)../nugets</PackageOutputPath>
     <Company />
     <Product />
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
     <PackageReference Include="System.Threading.Tasks.Extensions" Version="4.5.4" />
     <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="6.0.0" />
     <PackageReference Include="FodyPackaging" Version="6.6.0" PrivateAssets="All" />
+    <PackageReference Include="Fody" Version="6.6.0" PrivateAssets="none" />
   </ItemGroup>
 </Project>

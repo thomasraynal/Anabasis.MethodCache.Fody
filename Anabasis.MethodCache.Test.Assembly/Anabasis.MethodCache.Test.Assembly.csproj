@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFrameworks>net472;netstandard2.0</TargetFrameworks>
     <RootNamespace>Anabasis.MethodCache</RootNamespace>
+    <DisableFody>true</DisableFody>
   </PropertyGroup>
 
   <ItemGroup>
@@ -12,6 +13,12 @@
   <ItemGroup>
     <ProjectReference Include="..\Anabasis.MethodCache.Test.Common\Anabasis.MethodCache.Test.Common.csproj" />
     <ProjectReference Include="..\Anabasis.MethodCache\Anabasis.MethodCache.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="FodyWeavers.xml">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 

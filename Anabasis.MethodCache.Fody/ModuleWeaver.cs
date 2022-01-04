@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Anabasis.MethodCache.Fody
 {
-    public partial class ModuleWeaver : BaseModuleWeaver
+    public class ModuleWeaver : BaseModuleWeaver
     {
         public override void Execute()
         {

@@ -10,5 +10,10 @@
     <PackageReference Include="FodyHelpers" Version="6.6.0" />
   </ItemGroup>
 
-
+  <Target Name="GetTargetPath" Returns="@(_FakeOutputPath)">
+    <ItemGroup>
+      <_FakeOutputPath Include="$(MSBuildProjectDirectory)\$(PackageOutputPath)\$(AssemblyName).UNK" />
+    </ItemGroup>
+  </Target>
+  
 </Project>

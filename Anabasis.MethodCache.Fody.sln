@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 16.0.31313.79
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache", "Anabasis.MethodCache\Anabasis.MethodCache.csproj", "{4FFC2A35-CBAB-4058-AC81-8E961914AEAC}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A5A267CA-BE1C-48A5-A9E3-77692A00CFD5} = {A5A267CA-BE1C-48A5-A9E3-77692A00CFD5}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Anabasis.MethodCache.Fody", "Anabasis.MethodCache.Fody\Anabasis.MethodCache.Fody.csproj", "{A5A267CA-BE1C-48A5-A9E3-77692A00CFD5}"
 EndProject
